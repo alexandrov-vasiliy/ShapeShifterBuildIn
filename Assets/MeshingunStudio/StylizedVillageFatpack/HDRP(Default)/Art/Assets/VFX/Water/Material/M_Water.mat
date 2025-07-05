@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1453562701317654184
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 12
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_Water
+  m_Shader: {fileID: -6465566751694194690, guid: 0eaae29f371926a4fb41ee2ce13d0bf3, type: 3}
+  m_ValidKeywords:
+  - _BUILTIN_ALPHATEST_ON
+  - _BUILTIN_AlphaClip
+  - _BUILTIN_SURFACE_TYPE_TRANSPARENT
+  m_InvalidKeywords:
+  - _DISABLE_SSR_TRANSPARENT
+  - _ENABLE_FOG_ON_TRANSPARENT
+  - _SURFACE_TYPE_TRANSPARENT
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    MotionVector: User
+    RenderType: Transparent
+  disabledShaderPasses:
+  - TransparentDepthPrepass
+  - TransparentDepthPostpass
+  - TransparentBackface
+  - RayTracingPrepass
+  - MOTIONVECTORS
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _RefractionNormal:
+        m_Texture: {fileID: 2800000, guid: abc00000000002035192207345207049, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Vector1_1: 20
+    - Vector1_2: 0.2
+    - Vector1_4b6359e4138b4938b9a2234a3a431526: 0.1
+    - Vector1_77540afbbbf0453681562d5478321802: 1
+    - Vector1_b9115520341e462a8318e8622b851afa: 1.5
+    - Vector1_b9115520341e462a8318e8622b851afa_1: 2.64
+    - Vector1_b9115520341e462a8318e8622b851afa_2: -0.5
+    - Vector1_b9115520341e462a8318e8622b851afa_3: 50
+    - Vector1_b9115520341e462a8318e8622b851afa_4: 1
+    - _BUILTIN_AlphaClip: 1
+    - _BUILTIN_Blend: 0
+    - _BUILTIN_CullMode: 2
+    - _BUILTIN_DstBlend: 10
+    - _BUILTIN_QueueControl: 0
+    - _BUILTIN_QueueOffset: 0
+    - _BUILTIN_SrcBlend: 5
+    - _BUILTIN_Surface: 1
+    - _BUILTIN_ZTest: 4
+    - _BUILTIN_ZWrite: 0
+    - _BUILTIN_ZWriteControl: 0
+    - _Dist1: 0.5
+    - _Freshnell: 0.05
+    - _NormalStrength: 0.2
+    - _Roughness: 0.95
+    m_Colors:
+    - Color_1: {r: 0.23921569, g: 0.5803922, b: 0.59607846, a: 1}
+    - Color_13ec232c958d4c648c90624257c5b37c: {r: 5.992157, g: 5.992157, b: 5.992157, a: 1}
+    - Color_35a38b55f4c144bd891ce06b7562e933: {r: 0.09411765, g: 0.47058824, b: 0.69803923, a: 1}
+  m_BuildTextureStacks: []
+--- !u!114 &1667803185966443522
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 0
