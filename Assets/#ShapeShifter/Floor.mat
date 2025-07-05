@@ -8,13 +8,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Floor
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 7cd5de0b884b14f88ab763ef465e1799, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _SEGMENTED_ON
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -52,8 +53,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 9f7fc21be940cdc4ebc6137d8729c742, type: 3}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -81,29 +82,51 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AmbientCol: 0
     - _Brightness: 1
     - _BumpScale: 1
+    - _Clipped: 0
+    - _ColBright: 0
+    - _ColIntense: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0
+    - _Glossiness: 4.03
     - _GlossyReflections: 1
+    - _Lumin: 0.47
+    - _MaxLight: 1
     - _Metallic: 0
+    - _MinLight: 0.215
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _Offset: -0.36
     - _Parallax: 0.02
+    - _RimBlend: 0.14
+    - _RimThreshold: 0.164
+    - _Segmented: 1
+    - _ShnIntense: 0
+    - _ShnOverlap: 0
+    - _ShnRange: 0.15
+    - _ShnSmooth: 0
+    - _Smoothness: 0.207
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Steps: 1
+    - _StpSmooth: 0.519
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 1
     m_Colors:
-    - _Color: {r: 0.3063965, g: 0.3886792, b: 0.25154144, a: 1}
+    - _AmbientColor: {r: 0.08679241, g: 0.06665002, b: 0.06665002, a: 1}
+    - _Color: {r: 1, g: 0.901005, b: 0, a: 1}
     - _Color_Down: {r: 0.22696537, g: 1, b: 0, a: 0}
     - _Color_Up: {r: 0.22696537, g: 1, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShnColor: {r: 1, g: 1, b: 0, a: 1}
+    - _SpecularColor: {r: 0.5169811, g: 0.06925597, b: 0.06925597, a: 1}
     - _Speed: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

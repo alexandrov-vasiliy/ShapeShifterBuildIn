@@ -316,8 +316,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b2af6f7c6c25d4fa5092368f8a0ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 5
-  waitTimeRange: {x: 2, y: 5}
+  wanderRadius: 15
+  wanderWaitRange: {x: 2, y: 4}
+  hungerIntervalRange: {x: 10, y: 60}
+  eatTimeRange: {x: 1, y: 2}
+  foodStopOffset: 0.7
   speedRange: {x: 1.5, y: 2.5}
   speedParam: Speed_f
   eatParam: Eat_b

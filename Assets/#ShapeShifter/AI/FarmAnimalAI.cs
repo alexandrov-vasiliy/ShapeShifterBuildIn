@@ -3,116 +3,229 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(NavMeshAgent))]
-public class FarmAnimalAI : MonoBehaviour
-{   /*───────────────────────────  НАСТРОЙКИ  ───────────────────────────*/
-
-    [Header("Общее поведение")]
-    [SerializeField] private float wanderRadius = 5f;          // радиус блуждания
-
-    [Space]
-    [Header("Диапазоны рандомизации")]
-
-    [MinMaxSlider(0f, 10f)]                                    // ✔ слайдер с двумя ручками
-    [SerializeField] private Vector2 waitTimeRange = new Vector2(2f, 5f);
-
-    [MinMaxSlider(0.5f, 4f)]
-    [SerializeField] private Vector2 speedRange = new Vector2(1.5f, 2.5f);
-
-    [Space]
-    [Header("Параметры Animator")]
-    [SerializeField] private string speedParam = "Speed_f";
-    [SerializeField] private string eatParam   = "Eat_b";
-
-    /*───────────────────────────  ПОЛЯ  ────────────────────────────────*/
-
-    private UnityEngine.AI.NavMeshAgent agent;
-    private Animator animator;
-    private Vector3 startPosition;
-
-    /*───────────────────────────  ЖИЗНЕННЫЙ ЦИКЛ  ──────────────────────*/
-
-    private void Start()
+namespace _ShapeShifter.AI
+{
+    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(NavMeshAgent))]
+    public class FarmAnimalAI : MonoBehaviour
     {
-        agent        = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        animator     = GetComponent<Animator>();
-        startPosition = transform.position;
+        /*────────── Настройки блуждания ──────────*/
+        [SerializeField] private float wanderRadius = 6f;
 
-        StartCoroutine(BehaviorRoutine());
-    }
+        [MinMaxSlider(1f, 10f)] [SerializeField]
+        private Vector2 wanderWaitRange = new Vector2(2f, 4f);
 
-    private void Update() => UpdateAnimations();
+        /*────────── Настройки голода и еды ───────*/
+        [MinMaxSlider(5f, 60f)] [SerializeField]
+        private Vector2 hungerIntervalRange = new Vector2(10f, 120f);
 
-    /*───────────────────────────  ОСНОВНОЙ ЦИКЛ  ───────────────────────*/
+        [MinMaxSlider(1f, 6f)] [SerializeField]
+        private Vector2 eatTimeRange = new Vector2(2f, 4f);
+        
+        [Header("Approach to food")]
+        [Range(0.1f, 2f)]
+        [SerializeField] private float foodStopOffset = 0.6f;  
 
-    private IEnumerator BehaviorRoutine()
-    {
-        while (true)
-        {
-            Vector3 target = GetRandomPoint();     // 1. найти цель
-            MoveTo(target);                        // 2. пойти к ней
+        /*────────── Диапазон скорости ────────────*/
+        [MinMaxSlider(1f, 6f)] [SerializeField]
+        private Vector2 speedRange = new Vector2(2f, 3.5f);
 
-            while (!HasReachedDestination())       // 3. ждать прибытия
-                yield return null;
-
-            yield return WaitAndEat();             // 4. постоять/поесть
-        }
-    }
-
-    /*───────────────────────────  ЛОГИКА  ──────────────────────────────*/
-
-    /// <summary>Случайная точка внутри круга wanderRadius.</summary>
-    private Vector3 GetRandomPoint()
-    {
-        Vector2 random2D = Random.insideUnitCircle * wanderRadius;
-        return startPosition + new Vector3(random2D.x, 0, random2D.y);
-    }
-
-    /// <summary>Задать новую цель и случайную скорость.</summary>
-    private void MoveTo(Vector3 point)
-    {
-        agent.speed = Random.Range(speedRange.x, speedRange.y);
-        agent.isStopped = false;
-        agent.SetDestination(point);
-    }
-
-    /// <summary>Проверка, что агент добрался.</summary>
-    private bool HasReachedDestination() =>
-        !agent.pathPending &&
-        agent.remainingDistance <= agent.stoppingDistance &&
-        (!agent.hasPath || agent.velocity.sqrMagnitude < 0.01f);
-
-    /// <summary>Ждёт случайное время и запускает анимацию еды.</summary>
-    private IEnumerator WaitAndEat()
-    {
-        float wait = Random.Range(waitTimeRange.x, waitTimeRange.y);
-
-        agent.isStopped = true;
-        animator.SetBool(eatParam, true);
-
-        yield return new WaitForSeconds(wait);
+        /*────────── Параметры Animator ───────────*/
+        [SerializeField] private string speedParam = "Speed_f";
+        [SerializeField] private string eatParam = "Eat_b";
+        
         
 
-        animator.SetBool(eatParam, false);
-        yield return new WaitForSeconds(wait);
-    }
+        /*────────── Приватные поля ───────────────*/
+        private enum State
+        {
+            Wandering,
+            Waiting,
+            GoingToFood,
+            Eating
+        }
 
-    /*───────────────────────────  АНИМАЦИЯ  ────────────────────────────*/
+        private State state;
 
-    private void UpdateAnimations()
-    {
-        animator.SetFloat(speedParam, agent.velocity.magnitude);
-    }
+        private NavMeshAgent agent;
+        private Animator animator;
+        private Vector3 homePos; // точка, от которой считаем wanderRadius
 
-    /*───────────────────────────  GIZMOS (опционально)  ────────────────*/
+        [ShowNonSerializedField]  private float wanderWaitTimer; // таймер паузы между точками
+       [ShowNonSerializedField] private float hungerTimer; // таймер до голода
+
+        private FoodItem currentFood;
+
+        /*─────────────────────────────────────────*/
+        private void Start()
+        {
+            agent = GetComponent<NavMeshAgent>();
+            animator = GetComponent<Animator>();
+            homePos = transform.position;
+
+            ResetHungerTimer();
+            ChooseNewWanderTarget();
+        }
+
+        private void Update()
+        {
+            UpdateHunger(); // ↓ может перевести в GoingToFood
+
+            switch (state)
+            {
+                case State.Wandering:
+                    HandleWandering();
+                    break;
+                case State.Waiting:
+                    HandleWaiting();
+                    break;
+                case State.GoingToFood:
+                    CheckFoodArrival();
+                    break;
+                // State.Eating полностью в корутине
+            }
+
+            animator.SetFloat(speedParam, agent.velocity.magnitude);
+        }
+
+        /*────────────────── Логика состояний ──────────────────*/
+
+        #region Wandering & Waiting
+
+        private void ChooseNewWanderTarget()
+        {
+            Vector2 rnd = Random.insideUnitCircle * wanderRadius;
+            Vector3 target = homePos + new Vector3(rnd.x, 0, rnd.y);
+            
+            agent.stoppingDistance = 0f;
+            agent.speed = Random.Range(speedRange.x, speedRange.y);
+            agent.isStopped = false;
+            agent.SetDestination(target);
+
+            state = State.Wandering;
+        }
+
+        private void HandleWandering()
+        {
+            if (ReachedDestination())
+            {
+                wanderWaitTimer = Random.Range(wanderWaitRange.x, wanderWaitRange.y);
+                agent.isStopped = true;
+                state = State.Waiting;
+            }
+        }
+
+        private void HandleWaiting()
+        {
+            wanderWaitTimer -= Time.deltaTime;
+            if (wanderWaitTimer <= 0f)
+                ChooseNewWanderTarget();
+        }
+
+        #endregion
+
+        #region Hunger / GoingToFood
+
+        private void UpdateHunger()
+        {
+            hungerTimer -= Time.deltaTime;
+            Debug.Log($"{name} hunger: {hungerTimer:F1}");
+
+            if (hungerTimer > 0f) return;
+
+            // Уже голоден
+            if (state == State.GoingToFood || state == State.Eating) return;
+
+            FoodItem food = FindNearestAvailableFood();
+            if (food == null) return; // еды нет → продолжим гулять
+
+            BeginGoToFood(food);
+        }
+
+        private void BeginGoToFood(FoodItem food)
+        {
+            currentFood = food;
+            agent.stoppingDistance = foodStopOffset;
+            agent.speed = Random.Range(speedRange.x, speedRange.y);
+            agent.isStopped = false;
+            agent.SetDestination(food.transform.position);
+            state = State.GoingToFood;
+        }
+
+        private void CheckFoodArrival()
+        {
+            // если еда исчезла/занята
+            if (currentFood == null || !currentFood.IsAvailable)
+            {
+                state = State.Waiting; // встанем, подождём до след. wander
+                wanderWaitTimer = 1.5f;
+                return;
+            }
+
+            if (ReachedDestination())
+                StartCoroutine(EatRoutine());
+        }
+
+        private IEnumerator EatRoutine()
+        {
+            state = State.Eating;
+            agent.isStopped = true;
+
+            float eatTime = Random.Range(eatTimeRange.x, eatTimeRange.y);
+            animator.SetBool(eatParam, true);
+
+            yield return new WaitForSeconds(eatTime);
+
+            if (currentFood) currentFood.Consume();
+            animator.SetBool(eatParam, false);
+
+            currentFood = null;
+            ResetHungerTimer();
+
+            // сразу начнём паузу после еды
+            wanderWaitTimer = Random.Range(wanderWaitRange.x, wanderWaitRange.y);
+            state = State.Waiting;
+        }
+
+        #endregion
+
+        /*────────────────── Вспомогательные ──────────────────*/
+
+        private bool ReachedDestination() =>
+            !agent.pathPending &&
+            agent.remainingDistance <= agent.stoppingDistance &&
+            (!agent.hasPath || agent.velocity.sqrMagnitude < 0.01f);
+
+        private void ResetHungerTimer() =>
+            hungerTimer = Random.Range(hungerIntervalRange.x, hungerIntervalRange.y);
+
+        private FoodItem FindNearestAvailableFood()
+        {
+            float minDist = float.MaxValue;
+            FoodItem nearest = null;
+
+            foreach (var food in FoodItem.AllFood)
+            {
+                if (!food.IsAvailable) continue;
+                float d = Vector3.SqrMagnitude(food.transform.position - transform.position);
+                if (d < minDist)
+                {
+                    minDist = d;
+                    nearest = food;
+                }
+            }
+
+            return nearest;
+        }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(Application.isPlaying ? startPosition : transform.position,
-                              wanderRadius);
-    }
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(
+                Application.isPlaying ? homePos : transform.position,
+                wanderRadius);
+        }
 #endif
+    }
 }
