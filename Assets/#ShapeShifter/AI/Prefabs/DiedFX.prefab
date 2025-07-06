@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6509713135964368127}
   - component: {fileID: 4329318829895032008}
   m_Layer: 0
-  m_Name: DiedPrefab
+  m_Name: DiedFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

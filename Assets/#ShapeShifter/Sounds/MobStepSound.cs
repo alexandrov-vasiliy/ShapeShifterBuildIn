@@ -10,6 +10,7 @@ public class MobStepSound : MonoBehaviour
     
     public void StepSoundPlay()
     {
+        if(stepSounds.Length == 0) return;
         _audioSource.PlayOneShot(stepSounds[Random.Range(0, stepSounds.Length)]);
         Debug.Log("step sound");
     }
