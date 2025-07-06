@@ -43,9 +43,9 @@ public class ChangeAnimal : MonoBehaviour
         
         
         // меняем аниматор у PlayerMovement
-        playerMovement.controller.height = animalSettings.colliderHeight;
+        /*playerMovement.controller.height = animalSettings.colliderHeight;
         playerMovement.controller.radius = animalSettings.colliderRadius;
-        playerMovement.controller.center = animalSettings.colliderOffset;
+        playerMovement.controller.center = animalSettings.colliderOffset;*/
         cameraOrbital.TargetOffset = animalSettings.targetOffset;
         cameraOrbital.VerticalAxis.Value = animalSettings.cameraHeight;
         cameraRotationComposer.Composition.ScreenPosition = animalSettings.screenPosition;
