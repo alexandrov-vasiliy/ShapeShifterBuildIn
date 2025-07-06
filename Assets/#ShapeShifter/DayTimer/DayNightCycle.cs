@@ -1,9 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class DayNightCycle : MonoBehaviour
 {
-    public float dayDuration = 30f;
+    public float dayDuration = 300f; // например 5 минут
     public Light sun;
     public Color dayColor = Color.white;
     public Color nightColor = Color.blue;
@@ -17,7 +17,7 @@ public class DayNightCycle : MonoBehaviour
     public float nightAmbientIntensity = 0.2f;
 
     [Header("UI")]
-    public Image timerBar; // <-- сюда в инспекторе перетащим твой Image
+    public TMP_Text timerText;
 
     private float currentTime = 0f;
     private bool isDay = true;
@@ -40,9 +40,14 @@ public class DayNightCycle : MonoBehaviour
             sun.intensity = Mathf.Lerp(1f, 0.2f, t);
             RenderSettings.ambientIntensity = Mathf.Lerp(dayAmbientIntensity, nightAmbientIntensity, t);
 
-            // обновляем таймер UI
-            if (timerBar != null)
-                timerBar.fillAmount = Mathf.Clamp01(1f - t);
+            if (timerText != null)
+            {
+                float remaining = Mathf.Clamp(dayDuration - currentTime, 0, dayDuration);
+                int minutes = Mathf.FloorToInt(remaining / 60f);
+                int seconds = Mathf.FloorToInt(remaining % 60);
+
+                timerText.text = string.Format("{0}:{1:00}", minutes, seconds);
+            }
 
             if (currentTime >= dayDuration)
             {
@@ -51,7 +56,7 @@ public class DayNightCycle : MonoBehaviour
         }
         else if (isNightRunning)
         {
-            // можем пустить анимацию таймера на выполнение задачи ночью
+            // можешь добавить здесь логику для отображения времени на ночь
         }
     }
 
@@ -69,8 +74,12 @@ public class DayNightCycle : MonoBehaviour
         RenderSettings.skybox = daySkybox;
         DynamicGI.UpdateEnvironment();
 
-        if (timerBar != null)
-            timerBar.fillAmount = 1f; // день начинается — полная шкала
+        if (timerText != null)
+        {
+            int minutes = Mathf.FloorToInt(dayDuration / 60f);
+            int seconds = Mathf.FloorToInt(dayDuration % 60);
+            timerText.text = string.Format("{0}:{1:00}", minutes, seconds);
+        }
     }
 
     private void StartNight()
@@ -86,8 +95,8 @@ public class DayNightCycle : MonoBehaviour
         RenderSettings.skybox = nightSkybox;
         DynamicGI.UpdateEnvironment();
 
-        if (timerBar != null)
-            timerBar.fillAmount = 0f; // ночь наступила — шкала пустая
+        if (timerText != null)
+            timerText.text = "Night!";
     }
 
     public void TaskCompleted()
@@ -102,4 +111,3 @@ public class DayNightCycle : MonoBehaviour
         Debug.Log("Игра закончена!");
     }
 }
-
