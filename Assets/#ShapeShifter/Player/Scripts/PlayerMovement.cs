@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,22 +13,26 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float smoothTime;
     [SerializeField] private float smooth;
     public Transform firstCamera;
-
+    public float currentSpeed;
+    
     [Header("References")]
     public CharacterController controller;
-   [HideInInspector] public Animator animator;
+    public Animator animator;
     public CinemachineCamera camera;
 
 
     private Vector3 horizontalVelocity;
     private float verticalVelocity;
-
+    private bool isFrozen;
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
 
     private void Update()
     {
-        HandleMovement();
+        if (!isFrozen)
+        {
+            HandleMovement();
+        }
         HandleGravity();
     }
 
@@ -37,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+        currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
         float animSpeedValue = Input.GetKey(KeyCode.LeftShift) ? 1f : 0.5f;
         if (horizontal != 0 || vertical != 0)
         {
@@ -75,4 +80,20 @@ public class PlayerMovement : MonoBehaviour
             verticalVelocity = -0.1f;
         }
     }
+
+    public void Freeze(float duration)
+    {
+        StartCoroutine(FreezeCoroutine(duration));
+    }
+
+    private IEnumerator FreezeCoroutine(float duration)
+    {
+        isFrozen = true;
+        animator.SetFloat("Speed_f", 0f); 
+        yield return new WaitForSeconds(duration);
+        animator.SetBool("Eat_b", false);
+        isFrozen = false;
+    }
+    
+    
 }

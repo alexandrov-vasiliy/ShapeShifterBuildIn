@@ -236,6 +236,9 @@ GameObject:
   - component: {fileID: 2754697526297497303}
   - component: {fileID: 6964522245636851424}
   - component: {fileID: 4792492833956568806}
+  - component: {fileID: 15688907151869290}
+  - component: {fileID: 5718999729774422335}
+  - component: {fileID: 9190210978571343928}
   m_Layer: 0
   m_Name: Chick_AI
   m_TagString: Untagged
@@ -291,7 +294,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5137559586974814956}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 3.11
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -316,7 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b2af6f7c6c25d4fa5092368f8a0ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 15
+  wanderRadius: 9.35
   wanderWaitRange: {x: 2, y: 4}
   hungerIntervalRange: {x: 10, y: 60}
   eatTimeRange: {x: 1, y: 2}
@@ -324,6 +327,68 @@ MonoBehaviour:
   speedRange: {x: 1.5, y: 2.5}
   speedParam: Speed_f
   eatParam: Eat_b
+--- !u!114 &15688907151869290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5137559586974814956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34876ed749bbdff4ba138406519e1495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &5718999729774422335
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5137559586974814956}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 4.55087
+  m_Height: 9.10174
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.4969478, z: -0.09858873}
+--- !u!54 &9190210978571343928
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5137559586974814956}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6496769675393284710
 GameObject:
   m_ObjectHideFlags: 0

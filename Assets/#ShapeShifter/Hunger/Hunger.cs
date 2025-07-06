@@ -28,5 +28,12 @@ public class Hunger : MonoBehaviour
             HungerBar.fillAmount = HungerCount / MAXHunger;
         }
     }
+
+    public void ResetHunger()
+    {
+        HungerCount = 100f;
+        HungerBar.fillAmount = 1;
+    }
+    
     
 }
