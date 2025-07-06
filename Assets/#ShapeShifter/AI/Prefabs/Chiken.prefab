@@ -409,6 +409,8 @@ GameObject:
   - component: {fileID: 1010833499326642244}
   - component: {fileID: 4739859983507953942}
   - component: {fileID: 9059440770884301130}
+  - component: {fileID: -8280334931274192547}
+  - component: {fileID: -5572221511781377485}
   m_Layer: 0
   m_Name: Chiken
   m_TagString: Untagged
@@ -519,6 +521,56 @@ MonoBehaviour:
   outline: {fileID: 3418176363161267608}
   deadParticle: {fileID: 1692878668801649872}
   visual: {fileID: 5181362847294612725}
+--- !u!136 &-8280334931274192547
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3887886125541320197}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 9.14
+  m_Height: 4.25
+  m_Direction: 0
+  m_Center: {x: 0, y: 8, z: 0}
+--- !u!54 &-5572221511781377485
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3887886125541320197}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3909804691811355940
 GameObject:
   m_ObjectHideFlags: 0
