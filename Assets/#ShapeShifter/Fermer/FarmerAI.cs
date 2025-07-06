@@ -1,178 +1,224 @@
-﻿/*────────────────────────────────────────────────────────────────────────
- *  FarmerAI.cs
- *────────────────────────────────────────────────────────────────────────*/
-
+﻿/*
+ * FarmerAI.cs —  Waypoint / Random Patrol + Hearing + Vision + EVENT‑based “player is eating”
+ * Unity 2021+  (NaughtyAttributes optional for MinMaxSlider)
+ */
 using System.Collections;
-using NaughtyAttributes;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.AI;
-
-namespace _ShapeShifter.Fermer
-{
-   /*────────────────────────────────────────────────────────────────────────
- *  FarmerAI.cs   —  Random‑Patrol version
- *────────────────────────────────────────────────────────────────────────*/
+using _ShapeShifter.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using NaughtyAttributes;
-using System.Collections;
-
 #if UNITY_EDITOR
-using UnityEditor;     // для гизмосов
+using UnityEditor;            // gizmos
 #endif
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Animator))]
 public class FarmerAI : MonoBehaviour
 {
-    /*────────────  СЛУЧАЙНЫЙ ПАТРУЛЬ  ────────────*/
-    [Header("Random Patrol")]
-    [Range(2f, 50f)]
-    [SerializeField] private float patrolRadius = 12f;
+    /*──────────────────── PATROL ───────────────────*/
+    [Header("Patrol (waypoints optional)")]
+    public Transform[] waypoints;                            // if empty → random patrol
 
+    [Range(2f, 50f)]   public float patrolRadius      = 12f;
     [MinMaxSlider(0.5f, 8f)]
-    [SerializeField] private Vector2 waitRange = new Vector2(1f, 2.5f);
+    public Vector2 waitRange = new Vector2(1f, 2.5f);
+    [Range(0.5f, 5f)]  public float patrolSpeed       = 2.4f;
+    [Range(0.5f, 10f)] public float minPatrolDistance = 3f;
 
-    [Range(0.5f, 5f)]
-    [SerializeField] private float patrolSpeed = 2.4f;    
-    [Range(4f, 15f)]
-    [SerializeField] private float attackSpeed = 2.4f;
+    /*──────────────────── HEARING ──────────────────*/
+    [Header("Hearing")]
+    [Range(2f, 40f)]   public float hearingDistance   = 18f;
+    [Range(1f, 15f)]   public float suspicionDuration = 5f;
 
-    /*────────────  ОБЗОР  ─────────────*/
-    [Header("Detection")]
-    [Range(5f, 40f)]
-    [SerializeField] private float viewDistance = 25f;
+    /*──────────────────── VISION ───────────────────*/
+    [Header("Vision")]
+    [Range(5f, 40f)]   public float viewDistance = 25f;
+    [Range(10f, 180f)] public float viewAngle    = 90f;
 
-    [Range(10f, 180f)]
-    [SerializeField] private float viewAngle = 90f;
-
-    [Range(0.5f, 2f)]
-    [SerializeField] private float eyesHeight = 1.6f;
-
-    [Tag] public string playerTag = "Player";
-
-    /*────────────  ОГОНЬ  ─────────────*/
+    /*──────────────────── SHOOTING ────────────────*/
     [Header("Shooting")]
-    [Range(5f, 25f)]
-    [SerializeField] private float shootingDistance = 20f;
-
-    [Range(0.3f, 3f)]
-    [SerializeField] private float fireRate = 1f;                // выстрелов/сек
-
+    [Range(5f, 25f)]   public float shootingDistance = 20f;
+    [Range(0.3f, 3f)]  public float fireRate         = 1f;
     public Transform muzzle;
     public GameObject bulletPrefab;
 
-    /*────────────  АНИМАЦИЯ  ──────────*/
-    [Header("Animator")]
-    [SerializeField] private string speedParam   = "f_Speed";
-    [SerializeField] private string shootTrigger = "Shoot";
+    /*──────────────────── ANIMATOR ────────────────*/
+    [Header("Animator params")]
+    public string speedParam = "f_Speed";
+    public string shootTrig  = "Shoot";
 
-    /*────────────  ВНУТРЕННЕЕ  ────────*/
+    /*──────────────────── EVENTS  ────────────────*/
+    [Header("Eating Event Memory")]
+    [Range(0.5f, 10f)]
+    public float eatMemoryDuration = 3f;   // «игрок ест» считается активным столько секунд после события
+
+    /*──────────────────── RUNTIME  ───────────────*/
+    [Tag] public string playerTag = "Player";
+    private Transform    player;
     private NavMeshAgent agent;
-    private Animator animator;
-    private Transform player;
+    private Animator     animator;
 
     private Vector3 homePos;
-  [SerializeField]  private float waitTimer;
+    private int     wpIndex;
+    private float   waitTimer;
 
     private bool  canShoot;
+    private float suspicionTimer;
 
-    private enum State { Patrol, Attack }
+    private bool  playerEating;      // обновляется через событие
+    private float eatTimer;          // отсчёт памяти
+
+    private enum State { Patrol, Suspicious, Attack }
     private State state = State.Patrol;
 
-    /*────────────────────────────────────────────*/
+    /*──────────────────── LIFECYCLE ───────────────*/
+    private void OnEnable()  => PlayerEvents.OnPlayerEat += HandlePlayerEat;
+    private void OnDisable() => PlayerEvents.OnPlayerEat -= HandlePlayerEat;
+
     private void Start()
     {
         agent    = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         player   = GameObject.FindGameObjectWithTag(playerTag)?.transform;
+        homePos  = transform.position;
 
-        if (!player) Debug.LogError("FarmerAI: Player not found by tag!");
-
-        homePos = transform.position;
-        PickNewPatrolPoint();
+        if (waypoints.Length > 0) GoToNextWaypoint();
+        else                      PickRandomPoint();
     }
 
     private void Update()
     {
+        TickEatingMemory();
+
         switch (state)
         {
-            case State.Patrol: PatrolUpdate(); break;
-            case State.Attack: AttackUpdate(); break;
+            case State.Patrol:     PatrolUpdate();     break;
+            case State.Suspicious: SuspiciousUpdate(); break;
+            case State.Attack:     AttackUpdate();     break;
         }
 
         animator.SetFloat(speedParam, agent.velocity.magnitude);
     }
 
-    /*────────────────────  PATROL  ───────────────────*/
+    /*──────────────────── EVENT HANDLER ───────────*/
+    private void HandlePlayerEat()
+    {
+        playerEating = true;
+        eatTimer     = eatMemoryDuration;
+    }
+
+    private void TickEatingMemory()
+    {
+        if (!playerEating) return;
+        eatTimer -= Time.deltaTime;
+        if (eatTimer <= 0f) playerEating = false;
+    }
+
+    /*──────────────────── PATROL ──────────────────*/
     private void PatrolUpdate()
     {
-        // если стоим на месте и ждём
         if (agent.isStopped)
         {
             waitTimer -= Time.deltaTime;
             if (waitTimer <= 0f)
             {
                 agent.isStopped = false;
-                PickNewPatrolPoint();
+                if (waypoints.Length > 0) GoToNextWaypoint();
+                else                      PickRandomPoint();
             }
         }
-        else
+        else if (!agent.hasPath || agent.pathStatus == NavMeshPathStatus.PathInvalid ||
+                 agent.remainingDistance <= agent.stoppingDistance + 0.2f)
         {
-            // дошёл до цели
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-            {
-                agent.isStopped = true;
-                waitTimer = Random.Range(waitRange.x, waitRange.y);
-            }
-        }
-
-        // замечаем «едящего» игрока?
-        if (PlayerIsEating() && CanSeePlayer())
-        {
-            state = State.Attack;
             agent.isStopped = true;
-            canShoot = true;
+            waitTimer = Random.Range(waitRange.x, waitRange.y);
         }
+
+        if (playerEating && InHearingRange() && !CanSeePlayer())
+            BeginSuspicion();
+        else if (playerEating && CanSeePlayer())
+            BeginAttack();
     }
 
-    private void PickNewPatrolPoint()
+    private void GoToNextWaypoint()
     {
-        
         agent.speed = patrolSpeed;
-        Vector3 randomDir = Random.insideUnitSphere * patrolRadius;
-        randomDir.y = 0f;
-        Vector3 target = homePos + randomDir;
-
-        // ищем ближайшую точку на NavMesh
-        if (NavMesh.SamplePosition(target, out var hit, patrolRadius, NavMesh.AllAreas))
-            agent.SetDestination(hit.position);
-        else
-            agent.SetDestination(transform.position);   // fallback
+        agent.SetDestination(waypoints[wpIndex].position);
+        wpIndex = (wpIndex + 1) % waypoints.Length;
     }
 
-    /*────────────────────  ATTACK  ──────────────────*/
-    private void AttackUpdate()
+    private void PickRandomPoint()
     {
-        if (!PlayerIsEating() || !CanSeePlayer())
+        agent.speed = patrolSpeed;
+
+        for (int i = 0; i < 10; i++)
+        {
+            Vector3 dir = Random.insideUnitSphere * patrolRadius; dir.y = 0;
+            Vector3 target = homePos + dir;
+            if (!NavMesh.SamplePosition(target, out var hit, 2f, NavMesh.AllAreas)) continue;
+            if ((hit.position - transform.position).sqrMagnitude < minPatrolDistance * minPatrolDistance) continue;
+            agent.SetDestination(hit.position);
+            return;
+        }
+        agent.isStopped = true; waitTimer = 1f;
+    }
+
+    /*──────────────────── SUSPICIOUS ──────────────*/
+    private void BeginSuspicion()
+    {
+        state = State.Suspicious;
+        suspicionTimer = suspicionDuration;
+        agent.isStopped = true;
+    }
+
+    private void SuspiciousUpdate()
+    {
+        suspicionTimer -= Time.deltaTime;
+
+        Vector3 lookDir = player.position - transform.position; lookDir.y = 0;
+        if (lookDir.sqrMagnitude > 0.01f)
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,
+                                                          Quaternion.LookRotation(lookDir),
+                                                          540f * Time.deltaTime);
+
+        if (playerEating && CanSeePlayer())
+        {
+            BeginAttack();
+            return;
+        }
+
+        if (suspicionTimer <= 0f || !playerEating)
         {
             state = State.Patrol;
-            agent.isStopped = true;          // начнём с паузы
+            agent.isStopped = true;
+            waitTimer = Random.Range(waitRange.x, waitRange.y);
+        }
+    }
+
+    /*──────────────────── ATTACK ──────────────────*/
+    private void BeginAttack()
+    {
+        state = State.Attack;
+        agent.isStopped = true;
+        canShoot = true;
+    }
+
+    private void AttackUpdate()
+    {
+        if (!playerEating || !CanSeePlayer())
+        {
+            state = State.Patrol;
+            agent.isStopped = true;
             waitTimer = Random.Range(waitRange.x, waitRange.y);
             return;
         }
 
-        // прицел
-        Vector3 dir = player.position - transform.position;
-        dir.y = 0;
+        Vector3 dir = player.position - transform.position; dir.y = 0;
         if (dir.sqrMagnitude > 0.01f)
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
-                Quaternion.LookRotation(dir),
-                480f * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,
+                                                          Quaternion.LookRotation(dir),
+                                                          480f * Time.deltaTime);
 
-        // стрельба
         if (dir.magnitude <= shootingDistance && canShoot)
             StartCoroutine(ShootRoutine());
     }
@@ -180,83 +226,53 @@ public class FarmerAI : MonoBehaviour
     private IEnumerator ShootRoutine()
     {
         canShoot = false;
-        animator.SetTrigger(shootTrigger);
-
-        // задержка под анимацию
-        yield return new WaitForSeconds(0.1f);
-         if (bulletPrefab && muzzle)
+        animator.SetTrigger(shootTrig);
+        yield return new WaitForSeconds(0.1f);          // sync with muzzle flash
+        if (bulletPrefab && muzzle)
             Instantiate(bulletPrefab, muzzle.position, muzzle.rotation);
-
         yield return new WaitForSeconds(1f / fireRate);
         canShoot = true;
     }
 
-    /*────────────────────  ВСПОМОГАТЕЛЬНОЕ  ─────────*/
-    private bool PlayerIsEating()
-    {
-        if (!player) return false;
-        var eater = player.GetComponent<IPlayerEater>();
-        return eater != null && eater.IsEating;
-    }
+    /*──────────────────── HELPERS ────────────────*/
+    private bool InHearingRange() =>
+        player && (player.position - transform.position).sqrMagnitude <= hearingDistance * hearingDistance;
 
     private bool CanSeePlayer()
     {
         if (!player) return false;
-
-        Vector3 origin    = transform.position;                
-        Vector3 toPlayer  = player.position - origin;
-        float   distance  = toPlayer.magnitude;
-        if (distance > viewDistance) return false;
-
-        // угол обзора
-        if (Vector3.Angle(transform.forward, toPlayer) > viewAngle * 0.5f)
-            return false;
-
-        // прямой луч
-        if (Physics.Raycast(origin, toPlayer.normalized, out var hit, viewDistance))
-            return hit.transform == player;
-
-        return false;
+        Vector3 origin = transform.position;
+        Vector3 to     = player.position - origin;
+        if (to.magnitude > viewDistance) return false;
+        if (Vector3.Angle(transform.forward, to) > viewAngle * 0.5f) return false;
+        return Physics.Raycast(origin, to.normalized, out var hit, viewDistance) && hit.transform == player;
     }
 
-    /*────────────────────  GIZMOS  ──────────────────*/
+    /*──────────────────── GIZMOS ─────────────────*/
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        Vector3 eye = transform.position + Vector3.up * eyesHeight;
+        Vector3 o = transform.position;
 
         bool sees = Application.isPlaying && CanSeePlayer();
-        Color fill = sees ? new Color(1f, 0.2f, 0.2f, 0.15f)
-                          : new Color(1f, 0.7f, 0.1f, 0.15f);
+        Handles.color = sees ? new Color(1, .2f, .2f, .15f) : new Color(1, .7f, .1f, .15f);
+        Handles.DrawSolidArc(o, Vector3.up,
+            Quaternion.Euler(0, -viewAngle * .5f, 0) * transform.forward,
+            viewAngle, viewDistance);
 
-        Handles.color = fill;
-        Handles.DrawSolidArc(
-            eye,
-            Vector3.up,
-            Quaternion.Euler(0, -viewAngle * 0.5f, 0) * transform.forward,
-            viewAngle,
-            viewDistance);
+        Gizmos.color = sees ? Color.red : Color.yellow;
+        Vector3 l = Quaternion.Euler(0, -viewAngle * .5f, 0) * transform.forward;
+        Vector3 r = Quaternion.Euler(0,  viewAngle * .5f, 0) * transform.forward;
+        Gizmos.DrawLine(o, o + l * viewDistance);
+        Gizmos.DrawLine(o, o + r * viewDistance);
+        Gizmos.DrawWireSphere(o, viewDistance);
 
-        Color edge = sees ? Color.red : Color.yellow;
-        Gizmos.color = edge;
-        Vector3 left  = Quaternion.Euler(0, -viewAngle * 0.5f, 0) * transform.forward;
-        Vector3 right = Quaternion.Euler(0,  viewAngle * 0.5f, 0) * transform.forward;
-        Gizmos.DrawLine(eye, eye + left  * viewDistance);
-        Gizmos.DrawLine(eye, eye + right * viewDistance);
-        Gizmos.DrawWireSphere(eye, viewDistance);
+        Gizmos.color = new Color(0, 1, 0, .25f);
+        Gizmos.DrawWireSphere(o, hearingDistance);
 
-        // радиус случайного патруля
-        Gizmos.color = new Color(0f, 0.5f, 1f, 0.15f);
+        Gizmos.color = new Color(0, .5f, 1, .15f);
         Gizmos.DrawWireSphere(Application.isPlaying ? homePos : transform.position,
                               patrolRadius);
     }
 #endif
-}
-
-/*──────────  Интерфейс флага «едим» у игрока  ──────────*/
-public interface IPlayerEater
-{
-    bool IsEating { get; }
-}
-
 }

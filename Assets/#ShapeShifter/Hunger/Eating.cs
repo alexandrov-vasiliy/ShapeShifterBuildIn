@@ -1,5 +1,6 @@
-using System;
 using System.Collections;
+using _ShapeShifter.Player;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,20 +12,47 @@ public class Eating : MonoBehaviour
     public Hunger HungerBar;
     public PlayerMovement playerMovement;
     private bool isRecharged = true;
+    private bool _isEating = false;
+    public bool IsEating => _isEating;
 
-    private void OnTriggerStay(Collider other)
+    [ShowNonSerializedField] private Food targetFood;
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isRecharged)
+        if(targetFood) return;
+
+        if (!other.gameObject.TryGetComponent<Food>(out var food)) return;
+        
+        targetFood = food;
+        targetFood.outline.enabled = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(targetFood == null) return;
+        
+        if (other.gameObject == targetFood.gameObject)
         {
+            targetFood.outline.enabled = false;
+            targetFood = null;
+            
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isRecharged && targetFood != null)
+        {
+            StartCoroutine(EatRoutin());
+            targetFood.Eat();
+            PlayerEvents.RaisePlayerEat();
+            targetFood = null;
             isRecharged = false;
-            playerMovement.Freeze(freezeDuration);
-            playerMovement.animator.Play("Eat");
+            //playerMovement.Freeze(freezeDuration);
+            //playerMovement.animator.Play("Eat");
             StartCoroutine(Recharge());
-            if (other.gameObject.GetComponent<Food>())
-            {
-                other.gameObject.SetActive(false);
-                HungerBar.ResetHunger();
-            }
+            HungerBar.ResetHunger();
+            
         }
     }
 
@@ -43,5 +71,14 @@ public class Eating : MonoBehaviour
 
         rechargeBar.fillAmount = 1f;
         isRecharged = true;
+    }
+
+
+    private IEnumerator EatRoutin()
+    {
+        _isEating = true;
+        yield return new WaitForSeconds(1f);
+        _isEating = false;
+
     }
 }
