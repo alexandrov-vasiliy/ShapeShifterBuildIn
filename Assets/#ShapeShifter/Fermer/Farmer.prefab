@@ -4292,13 +4292,14 @@ MonoBehaviour:
   suspicionDuration: 5
   viewDistance: 25
   viewAngle: 90
+  lookOffset: 51.2
   shootingDistance: 20
-  fireRate: 1
+  fireRate: 0.45
   shootAngleTolerance: 5
   muzzle: {fileID: 8129376151788127996}
   bulletPrefab: {fileID: 4974343512496659369, guid: 8562812013dbeb143a254e856c771eff, type: 3}
   speedParam: f_Speed
-  shootTrig: Shoot
+  shootBool: b_Shoot
   playerTag: Player
   ShootClips:
   - {fileID: 8300000, guid: aaeb24a97ee34e74ab76f8fceea2f18c, type: 3}

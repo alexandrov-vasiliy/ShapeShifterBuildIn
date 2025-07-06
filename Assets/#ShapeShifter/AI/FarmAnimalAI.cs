@@ -10,7 +10,7 @@ namespace _ShapeShifter.AI
     public class FarmAnimalAI : MonoBehaviour
     {
         /*────────── Настройки блуждания ──────────*/
-        [SerializeField] private float wanderRadius = 6f;
+        [SerializeField] private float wanderRadius = 36f;
 
         [MinMaxSlider(1f, 10f)] [SerializeField]
         private Vector2 wanderWaitRange = new Vector2(2f, 4f);
@@ -27,7 +27,7 @@ namespace _ShapeShifter.AI
         [SerializeField] private float foodStopOffset = 0.6f;  
 
         /*────────── Диапазон скорости ────────────*/
-        [MinMaxSlider(1f, 6f)] [SerializeField]
+        [MinMaxSlider(1f, 16f)] [SerializeField]
         private Vector2 speedRange = new Vector2(2f, 3.5f);
 
         /*────────── Параметры Animator ───────────*/
