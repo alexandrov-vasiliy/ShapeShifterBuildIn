@@ -10,6 +10,7 @@ using _ShapeShifter.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using NaughtyAttributes;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -206,16 +207,6 @@ public class FarmerAI : MonoBehaviour
     private void AttackUpdate()
     {
 
-        if (!CanSeePlayer())
-        {
-            state = State.Patrol;
-            agent.isStopped = true;
-
-            waitTimer = Random.Range(waitRange.x, waitRange.y);
-            animator.SetBool(shootBool, false);
-            return;
-        }
-        
         Vector3 dir = player.position - transform.position;
         dir.y = 0;
 
@@ -234,8 +225,15 @@ public class FarmerAI : MonoBehaviour
                 480f * Time.deltaTime);
         }
 
+        StartCoroutine(EndCorutine());
 
         animator.SetBool(shootBool, true);
+    }
+
+    private IEnumerator EndCorutine()
+    {
+        yield return new WaitForSeconds(4f);
+        SceneManager.LoadScene(0);
     }
 
     public void Fire()
