@@ -69,7 +69,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a664329b56839647b02079a2e21a05a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freezeDuration: 0
+  rechargeDuration: 0
+  rechargeBar: {fileID: 0}
   HungerBar: {fileID: 6497161199284756690}
+  playerMovement: {fileID: 0}
 --- !u!114 &6497161199284756690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,6 +173,7 @@ MonoBehaviour:
   smoothTime: 0.2
   smooth: 1
   firstCamera: {fileID: 0}
+  currentSpeed: 0
   controller: {fileID: 1089487135759546}
   animator: {fileID: 0}
   camera: {fileID: 0}
