@@ -129,7 +129,6 @@ namespace _ShapeShifter.AI
         private void UpdateHunger()
         {
             hungerTimer -= Time.deltaTime;
-            Debug.Log($"{name} hunger: {hungerTimer:F1}");
 
             if (hungerTimer > 0f) return;
 
