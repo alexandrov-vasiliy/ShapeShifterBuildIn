@@ -14,7 +14,7 @@ public class ChangeAnimal : MonoBehaviour
         
         cameraRotationComposer = playerMovement.camera.GetComponent<CinemachineRotationComposer>();
         cameraOrbital = playerMovement.camera.GetComponent<CinemachineOrbitalFollow>();
-        SetActiveAnimal(1);
+        SetActiveAnimal(0);
     }
 
     private void Update()
