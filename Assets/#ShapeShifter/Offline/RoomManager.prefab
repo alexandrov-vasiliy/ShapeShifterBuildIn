@@ -51,10 +51,10 @@ MonoBehaviour:
   headlessStartMode: 0
   editorAutoStart: 0
   sendRate: 60
-  offlineScene: Assets/Scenes/Offline.unity
-  onlineScene: 
+  offlineScene: Assets/#ShapeShifter/Scenes/Offline.unity
+  onlineScene: Assets/#ShapeShifter/Scenes/Develop.unity
   offlineSceneLoadDelay: 0
-  transport: {fileID: 0}
+  transport: {fileID: 5646191501792601568}
   networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
