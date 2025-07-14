@@ -5,8 +5,7 @@ using Mirror;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    [Header("Movement Settings")] 
-    public float walkSpeed;
+    [Header("Movement Settings")] public float walkSpeed;
 
     public float runSpeed;
     [SerializeField] private float gravity = -10f;
@@ -14,9 +13,8 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float smooth;
     public Transform firstCamera;
     public float currentSpeed;
-    
-    [Header("References")]
-    public CharacterController controller;
+
+    [Header("References")] public CharacterController controller;
     public Animator animator;
     public CinemachineCamera camera;
 
@@ -30,11 +28,9 @@ public class PlayerMovement : NetworkBehaviour
     private void Update()
     {
         if (!isLocalPlayer) return;
-        if (!isFrozen)
-        {
-            HandleMovement();
-        }
         HandleGravity();
+        if (isFrozen) return;
+        HandleMovement();
     }
 
 
@@ -90,11 +86,9 @@ public class PlayerMovement : NetworkBehaviour
     private IEnumerator FreezeCoroutine(float duration)
     {
         isFrozen = true;
-        animator.SetFloat("Speed_f", 0f); 
+        animator.SetFloat("Speed_f", 0f);
         yield return new WaitForSeconds(duration);
         animator.SetBool("Eat_b", false);
         isFrozen = false;
     }
-    
-    
 }
