@@ -1,9 +1,9 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Mirror;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [Header("Movement Settings")] 
     public float walkSpeed;
@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!isLocalPlayer) return;
         if (!isFrozen)
         {
             HandleMovement();

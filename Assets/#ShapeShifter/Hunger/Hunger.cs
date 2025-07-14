@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -24,7 +25,11 @@ public class Hunger : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
             HungerCount -= Cost;
-            if (HungerCount < 0) HungerCount = 0;
+            if (HungerCount <= 0)
+            {
+                HungerCount = 0;
+                SceneManager.LoadScene(0);
+            }
             HungerBar.fillAmount = HungerCount / MAXHunger;
         }
     }

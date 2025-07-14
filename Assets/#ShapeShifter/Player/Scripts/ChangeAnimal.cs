@@ -1,8 +1,9 @@
 using System;
+using Mirror;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class ChangeAnimal : MonoBehaviour
+public class ChangeAnimal : NetworkBehaviour
 {
     public GameObject[] animals;
     public PlayerMovement playerMovement;
@@ -11,10 +12,10 @@ public class ChangeAnimal : MonoBehaviour
 
     private void Start()
     {
-        
+        if (!isLocalPlayer) return;
         cameraRotationComposer = playerMovement.camera.GetComponent<CinemachineRotationComposer>();
         cameraOrbital = playerMovement.camera.GetComponent<CinemachineOrbitalFollow>();
-        SetActiveAnimal(1);
+        SetActiveAnimal(2);
     }
 
     private void Update()

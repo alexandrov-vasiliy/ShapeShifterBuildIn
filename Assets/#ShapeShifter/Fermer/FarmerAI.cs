@@ -10,6 +10,7 @@ using _ShapeShifter.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using NaughtyAttributes;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -44,6 +45,7 @@ public class FarmerAI : MonoBehaviour
 
     public Transform muzzle;
     public GameObject bulletPrefab;
+    public GameObject shotParticlePrefab; // Префаб партикла
 
     /*───────── ANIMATOR ────────────────────────────────────────────*/
     [Header("Animator")] public string speedParam = "f_Speed";
@@ -51,7 +53,7 @@ public class FarmerAI : MonoBehaviour
 
     /*───────── INTERNAL ─────────────────────────────────────────────*/
     [Tag] public string playerTag = "Player";
-    private Transform player;
+   [ShowNonSerializedField] private Transform player;
     private NavMeshAgent agent;
     private Animator animator;
 
@@ -199,21 +201,11 @@ public class FarmerAI : MonoBehaviour
     private void BeginAttack()
     {
         state = State.Attack;
-        agent.isStopped = true; // обязательно стоим
         canShoot = true;
     }
 
     private void AttackUpdate()
     {
-        if (!CanSeePlayer())
-        {
-            state = State.Patrol;
-            agent.isStopped = true;
-
-            waitTimer = Random.Range(waitRange.x, waitRange.y);
-            animator.SetBool(shootBool, false);
-            return;
-        }
 
         Vector3 dir = player.position - transform.position;
         dir.y = 0;
@@ -233,8 +225,15 @@ public class FarmerAI : MonoBehaviour
                 480f * Time.deltaTime);
         }
 
+        StartCoroutine(EndCorutine());
 
         animator.SetBool(shootBool, true);
+    }
+
+    private IEnumerator EndCorutine()
+    {
+        yield return new WaitForSeconds(4f);
+        SceneManager.LoadScene(0);
     }
 
     public void Fire()
@@ -243,6 +242,27 @@ public class FarmerAI : MonoBehaviour
 
         if (bulletPrefab && muzzle)
             Instantiate(bulletPrefab, muzzle.position, muzzle.rotation);
+        
+        if (shotParticlePrefab && player)
+        {
+            Vector3 dir = (player.position - muzzle.position).normalized;
+            // Создаём партикл, уже ориентированный на игрока
+            GameObject particle = Instantiate(
+                shotParticlePrefab,
+                muzzle.position,
+                Quaternion.LookRotation(dir, Vector3.up));
+
+            // Если у префаба есть Rigidbody — задаём ему скорость в нужном направлении
+            if (particle.TryGetComponent(out Rigidbody rb))
+            {
+                rb.linearVelocity = dir * 2;
+            }
+            else
+            {
+                // Если нет Rigidbody, а это обычный ParticleSystem в World Space,
+                // то сориентировать достаточно, он будет «лететь» за счёт собственного Emission
+            }
+        }
     }
 
     /*───────── HELPERS ──────────────────────────────────────────────*/

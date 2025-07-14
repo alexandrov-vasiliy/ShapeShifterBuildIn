@@ -1,140 +1,372 @@
 fileFormatVersion: 2
 guid: 1a74382f25455df4fb4d4bda7d93d9aa
-timeCreated: 1480205075
-licenseType: Store
 ModelImporter:
-  serializedVersion: 18
-  fileIDToRecycleName:
-    100000: GoatRig_Head_JawEndSHJnt
-    100002: GoatRig_Head_JawSHJnt
-    100004: GoatRig_Head_TopSHJnt
-    100006: GoatRig_l_Clavicle_01_01SHJnt
-    100008: GoatRig_l_Eye_01SHJnt
-    100010: GoatRig_l_FrontLeg_AnkleSHJnt
-    100012: GoatRig_l_FrontLeg_BallSHJnt
-    100014: GoatRig_l_FrontLeg_HipSHJnt
-    100016: GoatRig_l_FrontLeg_Knee1SHJnt
-    100018: GoatRig_l_FrontLeg_Knee2SHJnt
-    100020: GoatRig_l_FrontLeg_ToeSHJnt
-    100022: GoatRig_l_HindLeg_AnkleSHJnt
-    100024: GoatRig_l_HindLeg_BallSHJnt
-    100026: GoatRig_l_HindLeg_HipSHJnt
-    100028: GoatRig_l_HindLeg_Knee1SHJnt
-    100030: GoatRig_l_HindLeg_Knee2SHJnt
-    100032: GoatRig_l_HindLeg_ToeSHJnt
-    100034: GoatRig_Neck_01SHJnt
-    100036: GoatRig_Neck_02SHJnt
-    100038: GoatRig_Neck_TopSHJnt
-    100040: GoatRig_r_Clavicle_01_01SHJnt
-    100042: GoatRig_r_Eye_01SHJnt
-    100044: GoatRig_r_FrontLeg_AnkleSHJnt
-    100046: GoatRig_r_FrontLeg_BallSHJnt
-    100048: GoatRig_r_FrontLeg_HipSHJnt
-    100050: GoatRig_r_FrontLeg_Knee1SHJnt
-    100052: GoatRig_r_FrontLeg_Knee2SHJnt
-    100054: GoatRig_r_FrontLeg_ToeSHJnt
-    100056: GoatRig_r_HindLeg_AnkleSHJnt
-    100058: GoatRig_r_HindLeg_BallSHJnt
-    100060: GoatRig_r_HindLeg_HipSHJnt
-    100062: GoatRig_r_HindLeg_Knee1SHJnt
-    100064: GoatRig_r_HindLeg_Knee2SHJnt
-    100066: GoatRig_r_HindLeg_ToeSHJnt
-    100068: GoatRig_ROOTSHJnt
-    100070: GoatRig_SHJntGrp
-    100072: GoatRig_Spine_01SHJnt
-    100074: GoatRig_Spine_02SHJnt
-    100076: GoatRig_Spine_TopSHJnt
-    100078: GoatRig_Tail_01SHJnt
-    100080: GoatRig_Tail_02SHJnt
-    100082: GoatRig_Tail_TopSHJnt
-    100084: //RootNode
-    100086: SA_Animals_Goat_Black
-    100088: SA_Animals_Goat_Grey
-    100090: SA_Animals_Goat_White
-    100092: SA_Animals_Sheep_Black
-    100094: SA_Animals_Sheep_White
-    400000: GoatRig_Head_JawEndSHJnt
-    400002: GoatRig_Head_JawSHJnt
-    400004: GoatRig_Head_TopSHJnt
-    400006: GoatRig_l_Clavicle_01_01SHJnt
-    400008: GoatRig_l_Eye_01SHJnt
-    400010: GoatRig_l_FrontLeg_AnkleSHJnt
-    400012: GoatRig_l_FrontLeg_BallSHJnt
-    400014: GoatRig_l_FrontLeg_HipSHJnt
-    400016: GoatRig_l_FrontLeg_Knee1SHJnt
-    400018: GoatRig_l_FrontLeg_Knee2SHJnt
-    400020: GoatRig_l_FrontLeg_ToeSHJnt
-    400022: GoatRig_l_HindLeg_AnkleSHJnt
-    400024: GoatRig_l_HindLeg_BallSHJnt
-    400026: GoatRig_l_HindLeg_HipSHJnt
-    400028: GoatRig_l_HindLeg_Knee1SHJnt
-    400030: GoatRig_l_HindLeg_Knee2SHJnt
-    400032: GoatRig_l_HindLeg_ToeSHJnt
-    400034: GoatRig_Neck_01SHJnt
-    400036: GoatRig_Neck_02SHJnt
-    400038: GoatRig_Neck_TopSHJnt
-    400040: GoatRig_r_Clavicle_01_01SHJnt
-    400042: GoatRig_r_Eye_01SHJnt
-    400044: GoatRig_r_FrontLeg_AnkleSHJnt
-    400046: GoatRig_r_FrontLeg_BallSHJnt
-    400048: GoatRig_r_FrontLeg_HipSHJnt
-    400050: GoatRig_r_FrontLeg_Knee1SHJnt
-    400052: GoatRig_r_FrontLeg_Knee2SHJnt
-    400054: GoatRig_r_FrontLeg_ToeSHJnt
-    400056: GoatRig_r_HindLeg_AnkleSHJnt
-    400058: GoatRig_r_HindLeg_BallSHJnt
-    400060: GoatRig_r_HindLeg_HipSHJnt
-    400062: GoatRig_r_HindLeg_Knee1SHJnt
-    400064: GoatRig_r_HindLeg_Knee2SHJnt
-    400066: GoatRig_r_HindLeg_ToeSHJnt
-    400068: GoatRig_ROOTSHJnt
-    400070: GoatRig_SHJntGrp
-    400072: GoatRig_Spine_01SHJnt
-    400074: GoatRig_Spine_02SHJnt
-    400076: GoatRig_Spine_TopSHJnt
-    400078: GoatRig_Tail_01SHJnt
-    400080: GoatRig_Tail_02SHJnt
-    400082: GoatRig_Tail_TopSHJnt
-    400084: //RootNode
-    400086: SA_Animals_Goat_Black
-    400088: SA_Animals_Goat_Grey
-    400090: SA_Animals_Goat_White
-    400092: SA_Animals_Sheep_Black
-    400094: SA_Animals_Sheep_White
-    4300000: SA_Animals_Goat_White
-    4300002: SA_Animals_Sheep_White
-    4300004: SA_Animals_Goat_Grey
-    4300006: SA_Animals_Goat_Black
-    4300008: SA_Animals_Sheep_Black
-    7400000: GoatSheep_Idle
-    7400002: GoatSheep_Walk
-    7400004: GoatSheep_Run
-    7400006: GoatSheep_Eat
-    9500000: //RootNode
-    13700000: SA_Animals_Goat_Black
-    13700002: SA_Animals_Goat_Grey
-    13700004: SA_Animals_Goat_White
-    13700006: SA_Animals_Sheep_Black
-    13700008: SA_Animals_Sheep_White
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: GoatRig_Head_JawEndSHJnt
+  - first:
+      1: 100002
+    second: GoatRig_Head_JawSHJnt
+  - first:
+      1: 100004
+    second: GoatRig_Head_TopSHJnt
+  - first:
+      1: 100006
+    second: GoatRig_l_Clavicle_01_01SHJnt
+  - first:
+      1: 100008
+    second: GoatRig_l_Eye_01SHJnt
+  - first:
+      1: 100010
+    second: GoatRig_l_FrontLeg_AnkleSHJnt
+  - first:
+      1: 100012
+    second: GoatRig_l_FrontLeg_BallSHJnt
+  - first:
+      1: 100014
+    second: GoatRig_l_FrontLeg_HipSHJnt
+  - first:
+      1: 100016
+    second: GoatRig_l_FrontLeg_Knee1SHJnt
+  - first:
+      1: 100018
+    second: GoatRig_l_FrontLeg_Knee2SHJnt
+  - first:
+      1: 100020
+    second: GoatRig_l_FrontLeg_ToeSHJnt
+  - first:
+      1: 100022
+    second: GoatRig_l_HindLeg_AnkleSHJnt
+  - first:
+      1: 100024
+    second: GoatRig_l_HindLeg_BallSHJnt
+  - first:
+      1: 100026
+    second: GoatRig_l_HindLeg_HipSHJnt
+  - first:
+      1: 100028
+    second: GoatRig_l_HindLeg_Knee1SHJnt
+  - first:
+      1: 100030
+    second: GoatRig_l_HindLeg_Knee2SHJnt
+  - first:
+      1: 100032
+    second: GoatRig_l_HindLeg_ToeSHJnt
+  - first:
+      1: 100034
+    second: GoatRig_Neck_01SHJnt
+  - first:
+      1: 100036
+    second: GoatRig_Neck_02SHJnt
+  - first:
+      1: 100038
+    second: GoatRig_Neck_TopSHJnt
+  - first:
+      1: 100040
+    second: GoatRig_r_Clavicle_01_01SHJnt
+  - first:
+      1: 100042
+    second: GoatRig_r_Eye_01SHJnt
+  - first:
+      1: 100044
+    second: GoatRig_r_FrontLeg_AnkleSHJnt
+  - first:
+      1: 100046
+    second: GoatRig_r_FrontLeg_BallSHJnt
+  - first:
+      1: 100048
+    second: GoatRig_r_FrontLeg_HipSHJnt
+  - first:
+      1: 100050
+    second: GoatRig_r_FrontLeg_Knee1SHJnt
+  - first:
+      1: 100052
+    second: GoatRig_r_FrontLeg_Knee2SHJnt
+  - first:
+      1: 100054
+    second: GoatRig_r_FrontLeg_ToeSHJnt
+  - first:
+      1: 100056
+    second: GoatRig_r_HindLeg_AnkleSHJnt
+  - first:
+      1: 100058
+    second: GoatRig_r_HindLeg_BallSHJnt
+  - first:
+      1: 100060
+    second: GoatRig_r_HindLeg_HipSHJnt
+  - first:
+      1: 100062
+    second: GoatRig_r_HindLeg_Knee1SHJnt
+  - first:
+      1: 100064
+    second: GoatRig_r_HindLeg_Knee2SHJnt
+  - first:
+      1: 100066
+    second: GoatRig_r_HindLeg_ToeSHJnt
+  - first:
+      1: 100068
+    second: GoatRig_ROOTSHJnt
+  - first:
+      1: 100070
+    second: GoatRig_SHJntGrp
+  - first:
+      1: 100072
+    second: GoatRig_Spine_01SHJnt
+  - first:
+      1: 100074
+    second: GoatRig_Spine_02SHJnt
+  - first:
+      1: 100076
+    second: GoatRig_Spine_TopSHJnt
+  - first:
+      1: 100078
+    second: GoatRig_Tail_01SHJnt
+  - first:
+      1: 100080
+    second: GoatRig_Tail_02SHJnt
+  - first:
+      1: 100082
+    second: GoatRig_Tail_TopSHJnt
+  - first:
+      1: 100084
+    second: //RootNode
+  - first:
+      1: 100086
+    second: SA_Animals_Goat_Black
+  - first:
+      1: 100088
+    second: SA_Animals_Goat_Grey
+  - first:
+      1: 100090
+    second: SA_Animals_Goat_White
+  - first:
+      1: 100092
+    second: SA_Animals_Sheep_Black
+  - first:
+      1: 100094
+    second: SA_Animals_Sheep_White
+  - first:
+      4: 400000
+    second: GoatRig_Head_JawEndSHJnt
+  - first:
+      4: 400002
+    second: GoatRig_Head_JawSHJnt
+  - first:
+      4: 400004
+    second: GoatRig_Head_TopSHJnt
+  - first:
+      4: 400006
+    second: GoatRig_l_Clavicle_01_01SHJnt
+  - first:
+      4: 400008
+    second: GoatRig_l_Eye_01SHJnt
+  - first:
+      4: 400010
+    second: GoatRig_l_FrontLeg_AnkleSHJnt
+  - first:
+      4: 400012
+    second: GoatRig_l_FrontLeg_BallSHJnt
+  - first:
+      4: 400014
+    second: GoatRig_l_FrontLeg_HipSHJnt
+  - first:
+      4: 400016
+    second: GoatRig_l_FrontLeg_Knee1SHJnt
+  - first:
+      4: 400018
+    second: GoatRig_l_FrontLeg_Knee2SHJnt
+  - first:
+      4: 400020
+    second: GoatRig_l_FrontLeg_ToeSHJnt
+  - first:
+      4: 400022
+    second: GoatRig_l_HindLeg_AnkleSHJnt
+  - first:
+      4: 400024
+    second: GoatRig_l_HindLeg_BallSHJnt
+  - first:
+      4: 400026
+    second: GoatRig_l_HindLeg_HipSHJnt
+  - first:
+      4: 400028
+    second: GoatRig_l_HindLeg_Knee1SHJnt
+  - first:
+      4: 400030
+    second: GoatRig_l_HindLeg_Knee2SHJnt
+  - first:
+      4: 400032
+    second: GoatRig_l_HindLeg_ToeSHJnt
+  - first:
+      4: 400034
+    second: GoatRig_Neck_01SHJnt
+  - first:
+      4: 400036
+    second: GoatRig_Neck_02SHJnt
+  - first:
+      4: 400038
+    second: GoatRig_Neck_TopSHJnt
+  - first:
+      4: 400040
+    second: GoatRig_r_Clavicle_01_01SHJnt
+  - first:
+      4: 400042
+    second: GoatRig_r_Eye_01SHJnt
+  - first:
+      4: 400044
+    second: GoatRig_r_FrontLeg_AnkleSHJnt
+  - first:
+      4: 400046
+    second: GoatRig_r_FrontLeg_BallSHJnt
+  - first:
+      4: 400048
+    second: GoatRig_r_FrontLeg_HipSHJnt
+  - first:
+      4: 400050
+    second: GoatRig_r_FrontLeg_Knee1SHJnt
+  - first:
+      4: 400052
+    second: GoatRig_r_FrontLeg_Knee2SHJnt
+  - first:
+      4: 400054
+    second: GoatRig_r_FrontLeg_ToeSHJnt
+  - first:
+      4: 400056
+    second: GoatRig_r_HindLeg_AnkleSHJnt
+  - first:
+      4: 400058
+    second: GoatRig_r_HindLeg_BallSHJnt
+  - first:
+      4: 400060
+    second: GoatRig_r_HindLeg_HipSHJnt
+  - first:
+      4: 400062
+    second: GoatRig_r_HindLeg_Knee1SHJnt
+  - first:
+      4: 400064
+    second: GoatRig_r_HindLeg_Knee2SHJnt
+  - first:
+      4: 400066
+    second: GoatRig_r_HindLeg_ToeSHJnt
+  - first:
+      4: 400068
+    second: GoatRig_ROOTSHJnt
+  - first:
+      4: 400070
+    second: GoatRig_SHJntGrp
+  - first:
+      4: 400072
+    second: GoatRig_Spine_01SHJnt
+  - first:
+      4: 400074
+    second: GoatRig_Spine_02SHJnt
+  - first:
+      4: 400076
+    second: GoatRig_Spine_TopSHJnt
+  - first:
+      4: 400078
+    second: GoatRig_Tail_01SHJnt
+  - first:
+      4: 400080
+    second: GoatRig_Tail_02SHJnt
+  - first:
+      4: 400082
+    second: GoatRig_Tail_TopSHJnt
+  - first:
+      4: 400084
+    second: //RootNode
+  - first:
+      4: 400086
+    second: SA_Animals_Goat_Black
+  - first:
+      4: 400088
+    second: SA_Animals_Goat_Grey
+  - first:
+      4: 400090
+    second: SA_Animals_Goat_White
+  - first:
+      4: 400092
+    second: SA_Animals_Sheep_Black
+  - first:
+      4: 400094
+    second: SA_Animals_Sheep_White
+  - first:
+      43: 4300000
+    second: SA_Animals_Goat_White
+  - first:
+      43: 4300002
+    second: SA_Animals_Sheep_White
+  - first:
+      43: 4300004
+    second: SA_Animals_Goat_Grey
+  - first:
+      43: 4300006
+    second: SA_Animals_Goat_Black
+  - first:
+      43: 4300008
+    second: SA_Animals_Sheep_Black
+  - first:
+      74: 7400000
+    second: GoatSheep_Idle
+  - first:
+      74: 7400002
+    second: GoatSheep_Walk
+  - first:
+      74: 7400004
+    second: GoatSheep_Run
+  - first:
+      74: 7400006
+    second: GoatSheep_Eat
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: SA_Animals_Goat_Black
+  - first:
+      137: 13700002
+    second: SA_Animals_Goat_Grey
+  - first:
+      137: 13700004
+    second: SA_Animals_Goat_White
+  - first:
+      137: 13700006
+    second: SA_Animals_Sheep_Black
+  - first:
+      137: 13700008
+    second: SA_Animals_Sheep_White
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: GoatSheep_Idle
       takeName: Take 001
+      internalID: 0
       firstFrame: 1
       lastFrame: 120
       wrapMode: 0
@@ -142,6 +374,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 1
       loopBlendOrientation: 0
@@ -254,9 +487,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: GoatSheep_Walk
       takeName: Take 001
+      internalID: 0
       firstFrame: 130
       lastFrame: 165
       wrapMode: 0
@@ -264,6 +499,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 1
       loopBlendOrientation: 0
@@ -376,9 +612,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: GoatSheep_Run
       takeName: Take 001
+      internalID: 0
       firstFrame: 180
       lastFrame: 195
       wrapMode: 0
@@ -386,6 +624,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 1
       loopBlendOrientation: 0
@@ -498,9 +737,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: GoatSheep_Eat
       takeName: Take 001
+      internalID: 0
       firstFrame: 210
       lastFrame: 330
       wrapMode: 0
@@ -508,6 +749,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 1
       loopBlendOrientation: 0
@@ -620,44 +862,78 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-    isReadable: 0
+      additiveReferencePoseFrame: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 100
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
     importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 20
-    splitTangentsAcrossUV: 0
     normalImportMode: 1
     tangentImportMode: 1
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 100
     rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

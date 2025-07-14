@@ -3,11 +3,11 @@ using UnityEngine;
 public class Main : MonoBehaviour
 {
     
-    void Start()
+    /*void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-    }
+    }*/
 
    
 }

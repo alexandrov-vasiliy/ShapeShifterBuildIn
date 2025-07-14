@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DayNightCycle : MonoBehaviour
 {
@@ -97,6 +99,15 @@ public class DayNightCycle : MonoBehaviour
 
         if (timerText != null)
             timerText.text = "Night!";
+
+        StartCoroutine(LoadFinishScreen());
+    }
+
+    private IEnumerator LoadFinishScreen()
+    {
+        yield return new WaitForSeconds(5f);
+
+        SceneManager.LoadScene(1);
     }
 
     public void TaskCompleted()

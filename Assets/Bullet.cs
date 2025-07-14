@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
    private void Start()
    {
       Muzzle.Play();
-      Tracer.Play();
+      //Tracer.Play();
       Destroy(gameObject, 1f);
    }
 }
