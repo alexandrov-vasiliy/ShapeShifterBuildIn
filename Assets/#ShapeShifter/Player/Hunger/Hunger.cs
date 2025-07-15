@@ -16,7 +16,7 @@ public class Hunger : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Starving());
+        //StartCoroutine(Starving());
     }
 
     IEnumerator Starving()

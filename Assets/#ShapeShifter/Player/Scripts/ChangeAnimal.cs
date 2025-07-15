@@ -10,43 +10,53 @@ public class ChangeAnimal : NetworkBehaviour
     private CinemachineOrbitalFollow cameraOrbital;
     private CinemachineRotationComposer cameraRotationComposer;
 
+    [SyncVar(hook = nameof(OnAnimalIndexChanged))]
+    private int activeAnimalIndex = 2;
+
     private void Start()
     {
-        if (!isLocalPlayer) return;
         cameraRotationComposer = playerMovement.camera.GetComponent<CinemachineRotationComposer>();
         cameraOrbital = playerMovement.camera.GetComponent<CinemachineOrbitalFollow>();
-        SetActiveAnimal(2);
+
+        // Применяем модель при старте (для вновь подключившихся клиентов)
+        SetActiveAnimal(activeAnimalIndex);
     }
 
     private void Update()
     {
+        if (!isLocalPlayer) return;
+
         for (int i = 0; i < animals.Length; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
-                SetActiveAnimal(i);
+                CmdChangeAnimal(i);
             }
         }
     }
 
+    [Command]
+    private void CmdChangeAnimal(int index)
+    {
+        // Меняем SyncVar на сервере - Mirror автоматически вызовет hook на всех клиентах
+        activeAnimalIndex = index;
+    }
+
+    // Этот hook вызовется автоматически у всех клиентов
+    private void OnAnimalIndexChanged(int oldIndex, int newIndex)
+    {
+        SetActiveAnimal(newIndex);
+    }
+
     private void SetActiveAnimal(int index)
     {
-        // отключаем всех
-        foreach (var animal in animals)
+        for (int i = 0; i < animals.Length; i++)
         {
-            animal.SetActive(false);
+            animals[i].SetActive(i == index);
         }
 
-        // включаем выбранного
-        animals[index].SetActive(true);
-
         var animalSettings = animals[index].GetComponent<AnimalSettings>();
-        
-        
-        // меняем аниматор у PlayerMovement
-        /*playerMovement.controller.height = animalSettings.colliderHeight;
-        playerMovement.controller.radius = animalSettings.colliderRadius;
-        playerMovement.controller.center = animalSettings.colliderOffset;*/
+
         cameraOrbital.TargetOffset = animalSettings.targetOffset;
         cameraOrbital.VerticalAxis.Value = animalSettings.cameraHeight;
         cameraRotationComposer.Composition.ScreenPosition = animalSettings.screenPosition;
