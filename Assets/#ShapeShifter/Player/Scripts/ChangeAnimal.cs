@@ -9,18 +9,17 @@ public class ChangeAnimal : NetworkBehaviour
     public PlayerMovement playerMovement;
     private CinemachineOrbitalFollow cameraOrbital;
     private CinemachineRotationComposer cameraRotationComposer;
+    public NetworkAnimator networkAnimator;
 
     [SyncVar(hook = nameof(OnAnimalIndexChanged))]
     private int activeAnimalIndex = 2;
 
-    private void Start()
+    public override void OnStartClient()
     {
-        cameraRotationComposer = playerMovement.camera.GetComponent<CinemachineRotationComposer>();
-        cameraOrbital = playerMovement.camera.GetComponent<CinemachineOrbitalFollow>();
-
-        // Применяем модель при старте (для вновь подключившихся клиентов)
+        base.OnStartClient();
         SetActiveAnimal(activeAnimalIndex);
     }
+
 
     private void Update()
     {
@@ -48,21 +47,25 @@ public class ChangeAnimal : NetworkBehaviour
         SetActiveAnimal(newIndex);
     }
 
+
     private void SetActiveAnimal(int index)
     {
+        if (index < 0 || index >= animals.Length)
+        {
+            Debug.LogWarning($"Invalid animal index {index}");
+            return;
+        }
+
         for (int i = 0; i < animals.Length; i++)
         {
             animals[i].SetActive(i == index);
         }
 
         var animalSettings = animals[index].GetComponent<AnimalSettings>();
-
-        cameraOrbital.TargetOffset = animalSettings.targetOffset;
-        cameraOrbital.VerticalAxis.Value = animalSettings.cameraHeight;
-        cameraRotationComposer.Composition.ScreenPosition = animalSettings.screenPosition;
         playerMovement.runSpeed = animalSettings.runSpeed;
         playerMovement.walkSpeed = animalSettings.walkSpeed;
-        
-        playerMovement.animator = animals[index].GetComponent<Animator>();
+        var animator = animals[index].GetComponent<Animator>();
+        networkAnimator.animator = animator;
+        playerMovement.animator = animator;
     }
 }

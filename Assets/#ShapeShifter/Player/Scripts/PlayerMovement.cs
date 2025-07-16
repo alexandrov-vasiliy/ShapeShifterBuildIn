@@ -27,8 +27,10 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Update()
     {
-        if (!isLocalPlayer) return;
         HandleGravity();
+        if (animator == null) return;
+
+        if (!isLocalPlayer) return;
         if (isFrozen) return;
         HandleMovement();
     }
