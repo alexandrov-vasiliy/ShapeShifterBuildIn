@@ -29,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4446738262504561013}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17978247, y: -0.000000025857332, z: 0.000000004725693, w: 0.9837064}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.10488277, y: -0.0040889126, z: 0.00043123856, w: 0.9944761}
+  m_LocalPosition: {x: 40.38, y: 21.61, z: -105.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -113,7 +113,7 @@ MonoBehaviour:
     SplineCurvature: 0.494
   RecenteringTarget: 2
   HorizontalAxis:
-    Value: 0
+    Value: 72.93384
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -123,7 +123,7 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalAxis:
-    Value: 17.5
+    Value: -9.995169
     Center: 17.5
     Range: {x: -10, y: 45}
     Wrap: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Composition:
-    ScreenPosition: {x: 0, y: 0}
+    ScreenPosition: {x: 0.013624072, y: 0.1321069}
     DeadZone:
       Enabled: 0
       Size: {x: 0.2, y: 0.2}
@@ -227,7 +227,7 @@ MonoBehaviour:
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
-      InputValue: 0
+      InputValue: -0
       Driver:
         AccelTime: 0.2
         DecelTime: 0.2
@@ -240,7 +240,7 @@ MonoBehaviour:
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
-      InputValue: 0
+      InputValue: -0
       Driver:
         AccelTime: 0
         DecelTime: 0
@@ -306,8 +306,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7760929072621085413}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17978248, y: -0.000000025857334, z: 0.0000000047256945, w: 0.9837064}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.10488277, y: -0.0040889126, z: 0.00043123856, w: 0.9944761}
+  m_LocalPosition: {x: 40.38, y: 21.61, z: -105.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -65,6 +65,7 @@ public class ChangeAnimal : NetworkBehaviour
         playerMovement.runSpeed = animalSettings.runSpeed;
         playerMovement.walkSpeed = animalSettings.walkSpeed;
         var animator = animals[index].GetComponent<Animator>();
+        animator.SetFloat("Speed_f", 0);
         networkAnimator.animator = animator;
         playerMovement.animator = animator;
     }

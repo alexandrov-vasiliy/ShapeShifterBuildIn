@@ -24,11 +24,12 @@ public class PlayerMovement : NetworkBehaviour
     private bool isFrozen;
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
+    private static readonly int SpeedF = Animator.StringToHash("Speed_f");
 
     private void Update()
     {
         HandleGravity();
-        if (animator == null) return;
+        if (animator == null) animator.SetFloat(SpeedF, 0);
 
         if (!isLocalPlayer) return;
         if (isFrozen) return;
