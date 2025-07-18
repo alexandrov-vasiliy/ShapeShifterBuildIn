@@ -80,7 +80,7 @@ MonoBehaviour:
   timeInterpolationGui: 0
   showRoomGUI: 1
   minPlayers: 1
-  roomPlayerPrefab: {fileID: -8171987340019867396, guid: d630816712c98b946bfff0fe621d7196, type: 3}
+  roomPlayerPrefab: {fileID: -8519606944940040001, guid: d630816712c98b946bfff0fe621d7196, type: 3}
   RoomScene: Assets/#ShapeShifter/Scenes/Lobby.unity
   GameplayScene: Assets/#ShapeShifter/Scenes/Landscape.unity
   _allPlayersReady: 0
