@@ -3,70 +3,129 @@ using Mirror;
 using Unity.Cinemachine;
 using UnityEngine;
 
+/// <summary>
+/// Allows the owner of a player object to switch between several animal meshes/animators.
+/// A non‑owner can no longer trigger the change because:
+///  1. Update() runs only for the client that has authority.
+///  2. The Command has <see cref="CommandAttribute.requiresAuthority"/> = true (default)
+///     *and* additionally checks <paramref name="sender"/>.
+/// </summary>
+[RequireComponent(typeof(NetworkIdentity))]
 public class ChangeAnimal : NetworkBehaviour
 {
-    public GameObject[] animals;
-    public PlayerMovement playerMovement;
+    [Header("References")]
+    [SerializeField] private GameObject[] animals = Array.Empty<GameObject>();
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private NetworkAnimator networkAnimator;
+
+    // Camera components are optional – keep them if you really use them somewhere else.
     private CinemachineOrbitalFollow cameraOrbital;
     private CinemachineRotationComposer cameraRotationComposer;
-    public NetworkAnimator networkAnimator;
 
+    [Header("Runtime state")] // Visible in the inspector at runtime only
     [SyncVar(hook = nameof(OnAnimalIndexChanged))]
-    private int activeAnimalIndex = 2;
+    private int activeAnimalIndex = 0;
+
+    #region Unity callbacks
+
+    private void Awake()
+    {
+        // Cache camera components once so we don't search every time.
+        cameraOrbital = Camera.main?.GetComponent<CinemachineOrbitalFollow>();
+        cameraRotationComposer = Camera.main?.GetComponent<CinemachineRotationComposer>();
+    }
 
     public override void OnStartClient()
     {
         base.OnStartClient();
+        // Ensure the correct model is active when we connect late.
         SetActiveAnimal(activeAnimalIndex);
     }
 
-
     private void Update()
     {
-        if (!isLocalPlayer) return;
+        // Make sure **only** the owner handles input.
+        if (!isOwned) return;
 
         for (int i = 0; i < animals.Length; i++)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i) && i != activeAnimalIndex)
             {
-                CmdChangeAnimal(i);
+                // Local validation so we don't spam the server with invalid data.
+                if (i < 0 || i >= animals.Length) continue;
+                CmdRequestChangeAnimal(i);
             }
         }
     }
 
-    [Command]
-    private void CmdChangeAnimal(int index)
+    #endregion
+
+    // ---------------------------------------------------------------------
+    //                            Server side
+    // ---------------------------------------------------------------------
+
+    /// <summary>
+    /// Executed on the *server*.
+    /// The extra <paramref name="sender"/> parameter is filled automatically by Mirror and
+    /// lets us verify that the caller really owns this object.
+    /// </summary>
+    [Command(requiresAuthority = true)]
+    private void CmdRequestChangeAnimal(int index, NetworkConnectionToClient sender = null)
     {
-        // Меняем SyncVar на сервере - Mirror автоматически вызовет hook на всех клиентах
-        activeAnimalIndex = index;
+        // SECURITY: If for some reason a client that does *not* own this object gained authority
+        // over it (mis‑configuration) we block the request here.
+        if (sender != connectionToClient) return;
+
+        if (index < 0 || index >= animals.Length) return; // extra sanity check
+
+        activeAnimalIndex = index; // Triggers the SyncVar hook on every client
     }
 
-    // Этот hook вызовется автоматически у всех клиентов
-    private void OnAnimalIndexChanged(int oldIndex, int newIndex)
-    {
-        SetActiveAnimal(newIndex);
-    }
+    // ---------------------------------------------------------------------
+    //                            Client side
+    // ---------------------------------------------------------------------
 
+    /// <summary>
+    /// Called automatically on *all* clients when <see cref="activeAnimalIndex"/> changes.
+    /// </summary>
+    private void OnAnimalIndexChanged(int oldIndex, int newIndex) => SetActiveAnimal(newIndex);
 
+    /// <summary>
+    /// Enables the selected animal mesh, updates movement stats and animator references.
+    /// Executes on both server and clients.
+    /// </summary>
     private void SetActiveAnimal(int index)
     {
         if (index < 0 || index >= animals.Length)
         {
-            Debug.LogWarning($"Invalid animal index {index}");
+            Debug.LogWarning($"[ChangeAnimal] Invalid animal index {index} on {name}");
             return;
         }
 
+        // Activate chosen model / deactivate the rest
         for (int i = 0; i < animals.Length; i++)
         {
             animals[i].SetActive(i == index);
         }
 
-        var animalSettings = animals[index].GetComponent<AnimalSettings>();
-        playerMovement.runSpeed = animalSettings.runSpeed;
-        playerMovement.walkSpeed = animalSettings.walkSpeed;
-        var animator = animals[index].GetComponent<Animator>();
-        animator.SetFloat("Speed_f", 0);
-        networkAnimator.animator = animator;
-        playerMovement.animator = animator;
+        ApplyStatsAndAnimator(index);
+    }
+
+    private void ApplyStatsAndAnimator(int index)
+    {
+        if (!playerMovement) return;
+
+        if (animals[index].TryGetComponent(out AnimalSettings animalSettings))
+        {
+            playerMovement.runSpeed  = animalSettings.runSpeed;
+            playerMovement.walkSpeed = animalSettings.walkSpeed;
+        }
+
+        if (animals[index].TryGetComponent(out Animator animator))
+        {
+            animator.SetFloat("Speed_f", 0f);
+            networkAnimator.animator = animator;
+            playerMovement.animator  = animator;
+        }
     }
 }

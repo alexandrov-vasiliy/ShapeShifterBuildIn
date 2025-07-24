@@ -7,7 +7,7 @@ using TMPro;
 public class CustomRoomUI : MonoBehaviour
 {
     public Button readyButton;
-    public Button leaveButton;
+    //public Button leaveButton;
     public TMP_Text statusText;
 
     private NetworkRoomPlayer roomPlayer;
@@ -30,13 +30,13 @@ public class CustomRoomUI : MonoBehaviour
             readyButton.onClick.AddListener(() => {
                 roomPlayer.CmdChangeReadyState(!roomPlayer.readyToBegin);
             });
-
+/*
             leaveButton.onClick.AddListener(() => {
                 if (NetworkServer.active)
                     NetworkManager.singleton.StopHost();
                 else
                     NetworkManager.singleton.StopClient();
-            });
+            });*/
         }
     }
 

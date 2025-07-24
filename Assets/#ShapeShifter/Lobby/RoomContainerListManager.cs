@@ -6,11 +6,12 @@ public class RoomContainerListManager : MonoBehaviour
 {
     public Transform container;              // Сюда будут добавляться слоты
     public GameObject playerSlotPrefab;      // Префаб слота (PlayerSlotUI)
-
+    
     private Dictionary<CustomRoomPlayer, PlayerSlotUI> uiSlots = new();
 
     private void OnEnable()
     {
+        
         CustomRoomPlayer.OnRoomPlayerStateChanged += OnPlayerStateChanged;
         CustomRoomPlayer.OnRoomPlayerJoined += OnPlayerJoined;
         CustomRoomPlayer.OnRoomPlayerLeft += OnPlayerLeft;

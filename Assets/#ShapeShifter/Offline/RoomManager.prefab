@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4546486452330168680}
-  - component: {fileID: 1523427542022582125}
   - component: {fileID: 5646191501792601568}
+  - component: {fileID: 2416367234778536867}
   m_Layer: 0
   m_Name: RoomManager
   m_TagString: Untagged
@@ -33,58 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1523427542022582125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4018820485992726521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 615e6c6589cf9e54cad646b5a11e0529, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
-  runInBackground: 1
-  headlessStartMode: 0
-  editorAutoStart: 0
-  sendRate: 60
-  offlineScene: Assets/#ShapeShifter/Scenes/Offline.unity
-  onlineScene: Assets/#ShapeShifter/Scenes/Lobby.unity
-  offlineSceneLoadDelay: 0
-  transport: {fileID: 5646191501792601568}
-  networkAddress: localhost
-  maxConnections: 100
-  disconnectInactiveConnections: 0
-  disconnectInactiveTimeout: 60
-  authenticator: {fileID: 0}
-  playerPrefab: {fileID: 1265858634334392961, guid: 1df3db1a0be65a04d99ed0c9b76b5a15, type: 3}
-  autoCreatePlayer: 1
-  playerSpawnMethod: 0
-  spawnPrefabs: []
-  exceptionsDisconnect: 1
-  snapshotSettings:
-    bufferTimeMultiplier: 2
-    bufferLimit: 32
-    catchupNegativeThreshold: -1
-    catchupPositiveThreshold: 1
-    catchupSpeed: 0.019999999552965164
-    slowdownSpeed: 0.03999999910593033
-    driftEmaDuration: 1
-    dynamicAdjustment: 1
-    dynamicAdjustmentTolerance: 1
-    deliveryTimeEmaDuration: 2
-  evaluationMethod: 0
-  evaluationInterval: 3
-  timeInterpolationGui: 0
-  showRoomGUI: 1
-  minPlayers: 1
-  roomPlayerPrefab: {fileID: -8519606944940040001, guid: d630816712c98b946bfff0fe621d7196, type: 3}
-  RoomScene: Assets/#ShapeShifter/Scenes/Lobby.unity
-  GameplayScene: Assets/#ShapeShifter/Scenes/Landscape.unity
-  _allPlayersReady: 0
-  clientIndex: 0
 --- !u!114 &5646191501792601568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,3 +57,63 @@ MonoBehaviour:
   clientMaxReceivesPerTick: 1000
   clientSendQueueLimit: 10000
   clientReceiveQueueLimit: 10000
+--- !u!114 &2416367234778536867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4018820485992726521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c933f7e4425838544a05801553d329ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 1
+  runInBackground: 1
+  headlessStartMode: 0
+  editorAutoStart: 0
+  sendRate: 60
+  offlineScene: Assets/#ShapeShifter/Scenes/Offline.unity
+  onlineScene: Assets/#ShapeShifter/Scenes/Lobby.unity
+  offlineSceneLoadDelay: 0
+  transport: {fileID: 5646191501792601568}
+  networkAddress: localhost
+  maxConnections: 100
+  disconnectInactiveConnections: 0
+  disconnectInactiveTimeout: 60
+  authenticator: {fileID: 0}
+  playerPrefab: {fileID: 5430676788416348764, guid: d630816712c98b946bfff0fe621d7196,
+    type: 3}
+  autoCreatePlayer: 1
+  playerSpawnMethod: 0
+  spawnPrefabs:
+  - {fileID: 4504819465622912080, guid: 4a6e07e96e440f345a41a9a1e6390899, type: 3}
+  - {fileID: 1265858634334392961, guid: 1df3db1a0be65a04d99ed0c9b76b5a15, type: 3}
+  exceptionsDisconnect: 1
+  snapshotSettings:
+    bufferTimeMultiplier: 2
+    bufferLimit: 32
+    catchupNegativeThreshold: -1
+    catchupPositiveThreshold: 1
+    catchupSpeed: 0.019999999552965164
+    slowdownSpeed: 0.03999999910593033
+    driftEmaDuration: 1
+    dynamicAdjustment: 1
+    dynamicAdjustmentTolerance: 1
+    deliveryTimeEmaDuration: 2
+  evaluationMethod: 0
+  evaluationInterval: 3
+  timeInterpolationGui: 0
+  showRoomGUI: 0
+  minPlayers: 1
+  roomPlayerPrefab: {fileID: -8519606944940040001, guid: d630816712c98b946bfff0fe621d7196,
+    type: 3}
+  RoomScene: Assets/#ShapeShifter/Scenes/Lobby.unity
+  GameplayScene: Assets/#ShapeShifter/Scenes/Landscape.unity
+  _allPlayersReady: 0
+  clientIndex: 0
+  hunterPrefab: {fileID: 4504819465622912080, guid: 4a6e07e96e440f345a41a9a1e6390899,
+    type: 3}
+  survivorPrefab: {fileID: 1265858634334392961, guid: 1df3db1a0be65a04d99ed0c9b76b5a15,
+    type: 3}
