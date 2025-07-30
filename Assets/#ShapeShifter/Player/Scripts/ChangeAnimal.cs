@@ -14,9 +14,11 @@ using UnityEngine;
 public class ChangeAnimal : NetworkBehaviour
 {
     [Header("References")]
+    [SerializeField] private GameObject deadModel; 
     [SerializeField] private GameObject[] animals = Array.Empty<GameObject>();
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private NetworkAnimator networkAnimator;
+    [SerializeField] private BoxCollider _playerCollider;
 
     // Camera components are optional – keep them if you really use them somewhere else.
     private CinemachineOrbitalFollow cameraOrbital;
@@ -25,6 +27,8 @@ public class ChangeAnimal : NetworkBehaviour
     [Header("Runtime state")] // Visible in the inspector at runtime only
     [SyncVar(hook = nameof(OnAnimalIndexChanged))]
     private int activeAnimalIndex = 0;
+
+    public bool isDead = false;
 
     #region Unity callbacks
 
@@ -45,7 +49,7 @@ public class ChangeAnimal : NetworkBehaviour
     private void Update()
     {
         // Make sure **only** the owner handles input.
-        if (!isOwned) return;
+        if (!isOwned || isDead) return;
 
         for (int i = 0; i < animals.Length; i++)
         {
@@ -64,6 +68,32 @@ public class ChangeAnimal : NetworkBehaviour
     //                            Server side
     // ---------------------------------------------------------------------
 
+    
+    public void SetDeadState()
+    {
+        isDead = true;
+
+        // Отключаем все животные модели
+        foreach (var animal in animals)
+        {
+            if (animal != null)
+                animal.SetActive(false);
+        }
+
+        // Включаем мёртвую модель, если задана
+        if (deadModel != null)
+            deadModel.SetActive(true);
+        
+        if (playerMovement != null)
+            playerMovement.enabled = false;
+
+        // Можно отключить управление, если хочешь:
+        if (playerMovement != null)
+            playerMovement.enabled = false;
+    }
+    
+    
+    
     /// <summary>
     /// Executed on the *server*.
     /// The extra <paramref name="sender"/> parameter is filled automatically by Mirror and
@@ -127,5 +157,11 @@ public class ChangeAnimal : NetworkBehaviour
             networkAnimator.animator = animator;
             playerMovement.animator  = animator;
         }
+
+        if (animals[index].TryGetComponent(out BoxCollider collider))
+        {
+            _playerCollider.size = collider.size;
+        }
+        
     }
 }

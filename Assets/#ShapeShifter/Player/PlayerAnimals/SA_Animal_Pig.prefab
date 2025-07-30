@@ -363,6 +363,7 @@ GameObject:
   - component: {fileID: 5099590131801930199}
   - component: {fileID: -1426067374662579526}
   - component: {fileID: -2179869423392879716}
+  - component: {fileID: 1353196602645152242}
   m_Layer: 0
   m_Name: SA_Animal_Pig
   m_TagString: Untagged
@@ -380,7 +381,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.1700001, z: 0}
-  m_LocalScale: {x: 0.075, y: 0.075, z: 0.075}
+  m_LocalScale: {x: 0.074999996, y: 0.074999996, z: 0.074999996}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8091901725256270048}
@@ -545,6 +546,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &1353196602645152242
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310863873825126066}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 12.198529, y: 17.284384, z: 33.665977}
+  m_Center: {x: -0.0470229, y: 8.854016, z: 1.7472832}
 --- !u!1 &2566927351628171690
 GameObject:
   m_ObjectHideFlags: 0

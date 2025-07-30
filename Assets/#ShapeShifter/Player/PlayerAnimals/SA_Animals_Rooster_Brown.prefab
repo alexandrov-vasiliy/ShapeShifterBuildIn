@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 6763182286743110486}
   - component: {fileID: 2152229633413982770}
   - component: {fileID: 5472269423554406538}
+  - component: {fileID: 966036615854239244}
   m_Layer: 0
   m_Name: SA_Animals_Rooster_Brown
   m_TagString: Untagged
@@ -360,6 +361,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &966036615854239244
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559596499842664792}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.03115, y: 15.583168, z: 21.371881}
+  m_Center: {x: 0.0670135, y: 7.8276844, z: -0.0000011920929}
 --- !u!1 &2111005479000740588
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,7 +566,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4309295030502878232}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000007778089, y: 0.031995818, z: -0.0000000147626285, w: 0.99948806}
+  m_LocalRotation: {x: 0.000000007778089, y: 0.031995818, z: -0.0000000147626285,
+    w: 0.99948806}
   m_LocalPosition: {x: -0.8270235, y: 6.131754e-17, z: 0.13593663}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
