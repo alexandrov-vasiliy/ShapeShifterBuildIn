@@ -1962,7 +1962,7 @@ MonoBehaviour:
   syncInterval: 0
   projectilePrefab: {fileID: 5732627341050095908, guid: 44220070ba02a4f4f8f2bebdf7e7e34a,
     type: 3}
-  projectileImpulse: 1600
+  projectileImpulse: 100
 --- !u!1 &4513740089565906912
 GameObject:
   m_ObjectHideFlags: 0

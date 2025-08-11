@@ -2,9 +2,10 @@
 using UnityEngine;
 using System.Collections;
 using InfimaGames.LowPolyShooterPack;
+using Mirror;
 using Random = UnityEngine.Random;
 
-public class Projectile : MonoBehaviour {
+public class Projectile : NetworkBehaviour {
 
 	[Range(5, 100)]
 	[Tooltip("After how long time should the bullet prefab be destroyed?")]
@@ -29,133 +30,88 @@ public class Projectile : MonoBehaviour {
 		//Ignore the main player character's collision. A little hacky, but it should work.
 		Physics.IgnoreCollision(gameModeService.GetPlayerCharacter().GetComponent<Collider>(), GetComponent<Collider>());
 		
-		//Start destroy timer
-		StartCoroutine (DestroyAfter ());
+		if (isServer) StartCoroutine(DestroyAfter());
+		
 	}
 
-	//If the bullet collides with anything
+
+	[ServerCallback]
 	private void OnCollisionEnter (Collision collision)
 	{
 		//Ignore collisions with other projectiles.
 		if (collision.gameObject.GetComponent<Projectile>() != null)
 			return;
-		Debug.Log("Bullet Collision");
+		Debug.Log("Bullet Collision " + collision.transform.tag);
 		
-		// //Ignore collision if bullet collides with "Player" tag
-		// if (collision.gameObject.CompareTag("Player")) 
-		// {
-		// 	//Physics.IgnoreCollision (collision.collider);
-		// 	Debug.LogWarning("Collides with player");
-		// 	//Physics.IgnoreCollision(GetComponent<Collider>(), GetComponent<Collider>());
-		//
-		// 	//Ignore player character collision, otherwise this moves it, which is quite odd, and other weird stuff happens!
-		// 	Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
-		//
-		// 	//Return, otherwise we will destroy with this hit, which we don't want!
-		// 	return;
-		// }
-		//
-		//If destroy on impact is false, start 
-		//coroutine with random destroy timer
-		if (!destroyOnImpact) 
-		{
-			StartCoroutine (DestroyTimer ());
-		}
-		//Otherwise, destroy bullet on impact
-		else 
-		{
-			Destroy (gameObject);
-		}
+		var contact = collision.GetContact(0);
+		string surface = collision.transform.tag;
 
-		//If bullet collides with "Blood" tag
-		if (collision.transform.tag == "Blood") 
-		{
-			//Instantiate random impact prefab from array
-			Instantiate (bloodImpactPrefabs [Random.Range 
-				(0, bloodImpactPrefabs.Length)], transform.position, 
-				Quaternion.LookRotation (collision.contacts [0].normal));
-			//Destroy bullet object
-			Destroy(gameObject);
-		}
+		RpcImpactEffect(contact.point, contact.normal, surface);
+		StartCoroutine(DestroyNextFrame());
 
-		//If bullet collides with "Metal" tag
-		if (collision.transform.tag == "Metal") 
-		{
-			//Instantiate random impact prefab from array
-			Instantiate (metalImpactPrefabs [Random.Range 
-				(0, bloodImpactPrefabs.Length)], transform.position, 
-				Quaternion.LookRotation (collision.contacts [0].normal));
-			//Destroy bullet object
-			Destroy(gameObject);
-		}
 
-		//If bullet collides with "Dirt" tag
-		if (collision.transform.tag == "Dirt") 
-		{
-			//Instantiate random impact prefab from array
-			Instantiate (dirtImpactPrefabs [Random.Range 
-				(0, bloodImpactPrefabs.Length)], transform.position, 
-				Quaternion.LookRotation (collision.contacts [0].normal));
-			//Destroy bullet object
-			Destroy(gameObject);
-		}
+	}
 
-		//If bullet collides with "Concrete" tag
-		if (collision.transform.tag == "Concrete") 
+	[ServerCallback]
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.TryGetComponent(out HitBox hb))
 		{
-			//Instantiate random impact prefab from array
-			Instantiate (concreteImpactPrefabs [Random.Range 
-				(0, bloodImpactPrefabs.Length)], transform.position, 
-				Quaternion.LookRotation (collision.contacts [0].normal));
-			//Destroy bullet object
-			Destroy(gameObject);
-		}
-
-		//If bullet collides with "Target" tag
-		if (collision.transform.tag == "Target") 
-		{
-			//Toggle "isHit" on target object
-			collision.transform.gameObject.GetComponent
-				<TargetScript>().isHit = true;
-			//Destroy bullet object
-			Destroy(gameObject);
-		}
+			Debug.Log($"Collided in hitbox {hb.name}");
+			hb.ApplyHit();
+			Vector3 point = other.ClosestPoint(transform.position);
+			Vector3 normal = -GetComponent<Rigidbody>().linearVelocity.normalized;
+			string surface = "Blood"; 
+			RpcImpactEffect(point, normal, surface);
 			
-		//If bullet collides with "ExplosiveBarrel" tag
-		if (collision.transform.tag == "ExplosiveBarrel") 
-		{
-			//Toggle "explode" on explosive barrel object
-			collision.transform.gameObject.GetComponent
-				<ExplosiveBarrelScript>().explode = true;
-			//Destroy bullet object
-			Destroy(gameObject);
-		}
+			StartCoroutine(DestroyNextFrame());
 
-		//If bullet collides with "GasTank" tag
-		if (collision.transform.tag == "GasTank") 
-		{
-			//Toggle "isHit" on gas tank object
-			collision.transform.gameObject.GetComponent
-				<GasTankScript> ().isHit = true;
-			//Destroy bullet object
-			Destroy(gameObject);
+
 		}
 	}
 
-	private IEnumerator DestroyTimer () 
-	{
-		//Wait random time based on min and max values
-		yield return new WaitForSeconds
-			(Random.Range(minDestroyTime, maxDestroyTime));
-		//Destroy bullet object
-		Destroy(gameObject);
-	}
 
-	private IEnumerator DestroyAfter () 
+	[ClientRpc]
+	public void RpcImpactEffect(Vector3 point, Vector3 normal, string surface)
 	{
-		//Wait for set amount of time
-		yield return new WaitForSeconds (destroyAfter);
-		//Destroy bullet object
-		Destroy (gameObject);
+		Transform fx = null;
+		Debug.Log($"Spawn impact surface: {surface}");
+		switch (surface)
+		{
+			case "Player":
+				if (bloodImpactPrefabs?.Length > 0)
+					fx = bloodImpactPrefabs[Random.Range(0, bloodImpactPrefabs.Length)];
+				break;
+			case "Blood":
+				if (bloodImpactPrefabs?.Length > 0)
+					fx = bloodImpactPrefabs[Random.Range(0, bloodImpactPrefabs.Length)];
+				break;
+			case "Metal":
+				if (metalImpactPrefabs?.Length > 0)
+					fx = metalImpactPrefabs[Random.Range(0, metalImpactPrefabs.Length)];
+				break;
+			case "Dirt":
+				if (dirtImpactPrefabs?.Length > 0)
+					fx = dirtImpactPrefabs[Random.Range(0, dirtImpactPrefabs.Length)];
+				break;
+			case "Concrete":
+				if (concreteImpactPrefabs?.Length > 0)
+					fx = concreteImpactPrefabs[Random.Range(0, concreteImpactPrefabs.Length)];
+				break;
+		}
+		Debug.Log($"Spawn impact fx: {fx.name}");
+		if (fx != null) Instantiate(fx, point, Quaternion.LookRotation(normal));
 	}
+	
+	IEnumerator DestroyNextFrame(){
+		yield return new WaitForEndOfFrame();
+		NetworkServer.Destroy(gameObject); 
+	}
+	
+	private IEnumerator DestroyAfter()
+	{
+		yield return new WaitForSeconds(destroyAfter);
+		if (isServer) NetworkServer.Destroy(gameObject);
+	}
+	
 }

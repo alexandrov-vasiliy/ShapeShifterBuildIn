@@ -18,10 +18,6 @@ namespace InfimaGames.LowPolyShooterPack
         [SerializeField] 
         private bool automatic;
         
-        [Tooltip("How fast the projectiles are.")]
-        [SerializeField]
-        private float projectileImpulse = 400.0f;
-
         [Tooltip("Amount of shots this weapon can shoot in a minute. It determines how fast the weapon shoots.")]
         [SerializeField] 
         private int roundsPerMinutes = 200;
@@ -46,9 +42,6 @@ namespace InfimaGames.LowPolyShooterPack
         [SerializeField]
         private GameObject prefabCasing;
         
-        [Tooltip("Projectile Prefab. This is the prefab spawned when the weapon shoots.")]
-        [SerializeField]
-        private GameObject prefabProjectile;
         
         [Tooltip("The AnimatorController a player character needs to use while wielding this weapon.")]
         [SerializeField] 

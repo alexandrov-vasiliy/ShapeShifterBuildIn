@@ -11,11 +11,25 @@ public class WeaponNetwork : NetworkBehaviour
         CmdSpawnProjectile(position, rotation);
     }
 
-    [Command]
+    [Command/*(requiresAuthority = false)*/]
     private void CmdSpawnProjectile(Vector3 position, Quaternion rotation)
     {
-        GameObject projectile = Instantiate(projectilePrefab, position, rotation);
-        projectile.GetComponent<Rigidbody>().linearVelocity = projectile.transform.forward * projectileImpulse;
-        NetworkServer.Spawn(projectile);
+        var go = Instantiate(projectilePrefab, position, rotation);
+        
+        var bulletCol = go.GetComponent<Collider>();
+        if (bulletCol != null && connectionToClient?.identity != null)
+        {
+            foreach (var col in connectionToClient.identity.GetComponentsInChildren<Collider>())
+                Physics.IgnoreCollision(bulletCol, col, true);
+        }
+
+        
+        var rb = go.GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.isKinematic = false;
+        rb.linearVelocity  = go.transform.forward * projectileImpulse; // <-- гарантированная скорость
+
+        NetworkServer.Spawn(go);
     }
 }

@@ -5,7 +5,7 @@ public class DeadSystem : NetworkBehaviour
 {
     public ChangeAnimal changeAnimal;
     [SerializeField] private GameObject modelToDisable;
-    public ColliderWatcher[] watchers;
+    public HitBox[] watchers;
 
     private void Start()
     {
