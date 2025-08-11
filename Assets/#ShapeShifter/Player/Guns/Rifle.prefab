@@ -71,13 +71,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7170d51de97d79e4fb11d3321667acb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  automatic: 1
-  projectileImpulse: 400
+  automatic: 0
+  projectileImpulse: 100
   roundsPerMinutes: 610
   mask:
     serializedVersion: 2
     m_Bits: 1
-  maximumDistance: 500
+  maximumDistance: 1000
   socketEjection: {fileID: 2461176359017068357}
   prefabCasing: {fileID: 1492315059354262, guid: c638dfae3f3edf843b2614dae230a771,
     type: 3}

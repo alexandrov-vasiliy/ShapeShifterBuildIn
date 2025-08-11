@@ -69,6 +69,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.437
       objectReference: {fileID: 0}
+    - target: {fileID: 5128952504444446358, guid: 7bb619ae56612894d96698e6cfdfdb61,
+        type: 3}
+      propertyPath: mask.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7193799860589407431, guid: 7bb619ae56612894d96698e6cfdfdb61,
         type: 3}
       propertyPath: m_LocalPosition.x

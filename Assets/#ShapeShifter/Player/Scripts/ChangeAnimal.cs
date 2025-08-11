@@ -13,12 +13,13 @@ using UnityEngine;
 [RequireComponent(typeof(NetworkIdentity))]
 public class ChangeAnimal : NetworkBehaviour
 {
-    [Header("References")]
-    [SerializeField] private GameObject deadModel; 
+    [Header("References")] [SerializeField]
+    private GameObject deadModel;
+
     [SerializeField] private GameObject[] animals = Array.Empty<GameObject>();
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private NetworkAnimator networkAnimator;
-    [SerializeField] private BoxCollider _playerCollider;
+
 
     // Camera components are optional – keep them if you really use them somewhere else.
     private CinemachineOrbitalFollow cameraOrbital;
@@ -68,7 +69,7 @@ public class ChangeAnimal : NetworkBehaviour
     //                            Server side
     // ---------------------------------------------------------------------
 
-    
+
     public void SetDeadState()
     {
         isDead = true;
@@ -83,7 +84,7 @@ public class ChangeAnimal : NetworkBehaviour
         // Включаем мёртвую модель, если задана
         if (deadModel != null)
             deadModel.SetActive(true);
-        
+
         if (playerMovement != null)
             playerMovement.enabled = false;
 
@@ -91,9 +92,8 @@ public class ChangeAnimal : NetworkBehaviour
         if (playerMovement != null)
             playerMovement.enabled = false;
     }
-    
-    
-    
+
+
     /// <summary>
     /// Executed on the *server*.
     /// The extra <paramref name="sender"/> parameter is filled automatically by Mirror and
@@ -147,7 +147,7 @@ public class ChangeAnimal : NetworkBehaviour
 
         if (animals[index].TryGetComponent(out AnimalSettings animalSettings))
         {
-            playerMovement.runSpeed  = animalSettings.runSpeed;
+            playerMovement.runSpeed = animalSettings.runSpeed;
             playerMovement.walkSpeed = animalSettings.walkSpeed;
         }
 
@@ -155,13 +155,7 @@ public class ChangeAnimal : NetworkBehaviour
         {
             animator.SetFloat("Speed_f", 0f);
             networkAnimator.animator = animator;
-            playerMovement.animator  = animator;
+            playerMovement.animator = animator;
         }
-
-        if (animals[index].TryGetComponent(out BoxCollider collider))
-        {
-            _playerCollider.size = collider.size;
-        }
-        
     }
 }

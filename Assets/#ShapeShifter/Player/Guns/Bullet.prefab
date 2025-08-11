@@ -5100,8 +5100,8 @@ GameObject:
   - component: {fileID: 641206184505045440}
   - component: {fileID: 3942199605701846671}
   - component: {fileID: 2556069159540794373}
-  - component: {fileID: -3570254047627413956}
   - component: {fileID: 6624810656744338271}
+  - component: {fileID: 8237953564995370831}
   m_Layer: 15
   m_Name: Bullet
   m_TagString: Untagged
@@ -5135,7 +5135,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5732627341050095908}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.03
   m_Drag: 0.65
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -5173,8 +5173,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.8470444, y: 0.9130248, z: 0.5716435}
+  m_Center: {x: 0.12029475, y: 0.029233983, z: 0.25151116}
 --- !u!96 &641206184505045440
 TrailRenderer:
   serializedVersion: 3
@@ -5303,10 +5303,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02ff3ea705a4a7244a59eef82e75c660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyAfter: 5
+  destroyAfter: 43
   destroyOnImpact: 1
-  minDestroyTime: 0.01
-  maxDestroyTime: 0.05
+  minDestroyTime: 20
+  maxDestroyTime: 20
   bloodImpactPrefabs:
   - {fileID: 4587651611338842, guid: 5e02303289b3c494e8e185be0fbbd405, type: 3}
   metalImpactPrefabs:
@@ -5327,7 +5327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee07d72ccdd2d44480e2a1b9dee11e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-3570254047627413956
+--- !u!114 &6624810656744338271
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5336,7 +5336,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 5732627341050095908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a553cb17010b2403e8523b558bffbc14, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 395030397
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
+--- !u!114 &8237953564995370831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732627341050095908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1
@@ -5356,25 +5373,8 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
-  bufferResetMultiplier: 3
+  onlySyncOnChangeCorrectionMultiplier: 2
   useFixedUpdate: 0
-  positionSensitivity: 0.01
   rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
---- !u!114 &6624810656744338271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732627341050095908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  _assetId: 395030397
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
+  positionPrecision: 0.01
+  scalePrecision: 0.01

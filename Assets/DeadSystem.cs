@@ -5,26 +5,29 @@ public class DeadSystem : NetworkBehaviour
 {
     public ChangeAnimal changeAnimal;
     [SerializeField] private GameObject modelToDisable;
-    private bool isDead = false;
+    public ColliderWatcher[] watchers;
 
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        if (!isServer) return;
-
-        // Только реагировать, если еще жив
-        if (isDead) return;
-
-        if (other.GetComponent<bulletName>())
+        foreach (var watcher in watchers)
         {
-            isDead = true;
-            RpcDie();
+            watcher.onBulletEnter.AddListener(Die);
+            Debug.Log(watcher.name + "subscribed");
         }
     }
+
 
     [ClientRpc]
     void RpcDie()
     {
         if (changeAnimal != null)
             changeAnimal.SetDeadState();
+    }
+
+
+    [Server]
+    public void Die()
+    {
+        RpcDie();
     }
 }

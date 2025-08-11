@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: -1426067374662579526}
   - component: {fileID: -2179869423392879716}
   - component: {fileID: 1353196602645152242}
+  - component: {fileID: 4209909862600389536}
   m_Layer: 0
   m_Name: SA_Animal_Pig
   m_TagString: Untagged
@@ -567,6 +568,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 12.198529, y: 17.284384, z: 33.665977}
   m_Center: {x: -0.0470229, y: 8.854016, z: 1.7472832}
+--- !u!114 &4209909862600389536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310863873825126066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7a51a1be1d42d4684cadc1746ff757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onBulletEnter:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2566927351628171690
 GameObject:
   m_ObjectHideFlags: 0

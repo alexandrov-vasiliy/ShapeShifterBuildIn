@@ -526,14 +526,16 @@ ModelImporter:
       - time: 0.283489
         functionName: StepSoundPlay
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 42a5d30f9076f894db674b6b495cad63, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 42a5d30f9076f894db674b6b495cad63,
+          type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.86915886
         functionName: StepSoundPlay
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 42a5d30f9076f894db674b6b495cad63, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 42a5d30f9076f894db674b6b495cad63,
+          type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -669,14 +671,16 @@ ModelImporter:
       - time: 0.49221182
         functionName: StepSoundPlay
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 42a5d30f9076f894db674b6b495cad63, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 42a5d30f9076f894db674b6b495cad63,
+          type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.9408102
         functionName: StepSoundPlay
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 42a5d30f9076f894db674b6b495cad63, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 42a5d30f9076f894db674b6b495cad63,
+          type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -971,7 +975,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 100
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
